@@ -76,7 +76,7 @@ $ make
 
 - TESTS, off default, unit test compilation switch. Open it through `cmake -DTESTS=on ..`
 
-- STATIC_BUILD, off default,static compilation switch，supports Ubuntu only. Open it through `cmake -DSTATIC_BUILD=on ..`
+- STATIC_BUILD, off default,static compilation switch, supports Ubuntu only. Open it through `cmake -DSTATIC_BUILD=on ..`
 
 - Generate source document.
     ```bash
