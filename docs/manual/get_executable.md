@@ -1,31 +1,33 @@
 # Get executable program
 
 Users are free to choose any of the following methods to get executable program of FISCO BCOS. It is recommended to download precompiled binaries from GitHub.
-- 官方提供的静态链接的预编译文件，可以在Ubuntu 16.04和CentOS 7.2以上版本运行。
-- 源码编译获取可执行程序，参考[源码编译](get_executable.html#id2)。
+- The officially provided statically linked precompiled files can be run on Ubuntu 16.04 and CentOS 7.2 version and above.
+- To get the executable program by source code compilation, reference [source code compilation](get_executable.html#id2).
 
-## 下载预编译fisco-bcos
+## Download precompiled fisco-bcos
 
-我们提供静态链接的预编译程序，在Ubuntu 16.04和CentOS 7经过测试。请从[Release](https://github.com/FISCO-BCOS/FISCO-BCOS/releases)页面下载最新发布的**预编译程序**。
+The statically linked pre-compiler we provided has been tested on Ubuntu 16.04 and CentOS 7. Please download the latest released **pre-compiler** from the [Release](https://github.com/FISCO-BCOS/FISCO-BCOS/releases).
 
-## 源码编译
+
+## Source code compilation
 
 ```eval_rst
 .. note::
     
-    源码编译适合于有丰富开发经验的用户，编译过程中需要下载依赖库，请保持网络畅通。受网络和机器配置影响，编译用时5-20分钟不等。
+    The source code compilation is suitable for the users with rich development experience. You need to download dependent library during the compilation process. Please keep network unobstructed. Affected by network and computer configuration, the compilation may take 5-20 minutes.
 ```
 
-FSICO-BCOS使用通用[CMake](https://cmake.org)构建系统生成特定平台的构建文件，这意味着无论您使用什么操作系统工作流都非常相似：
-1. 安装构建工具和依赖包（依赖于平台）。
-1. 从[FISCO BCOS][FSICO-BCOS-GitHub]克隆代码。
-1. 运行`cmake`生成构建文件并编译。
+FISCO-BCOS using generic [CMake](https://cmake.org) to build system to generate specific platform building files, which means that no matter what workflow systems you operate, they are very similar:
+1.	Install build tools and dependent package (depends on platform).
+2.	Clone code from [FISCO BCOS][FSICO-BCOS-GitHub].
+3.	Run `cmake` to generate the build file and compile.
 
-### 安装依赖
+
+### Installation dependencies
 
 - Ubuntu
 
-推荐Ubuntu 16.04以上版本，16.04以下的版本没有经过测试，源码编译时依赖于编译工具和`libssl`。
+Ubuntu 16.04 version and above are recommended. The versions below 16.04 have not been tested. The source code compiling depends on the build tools and `libssl`.
 
 ```bash
 $ sudo apt install -y libssl-dev openssl cmake git build-essential autoconf texinfo
@@ -33,7 +35,7 @@ $ sudo apt install -y libssl-dev openssl cmake git build-essential autoconf texi
 
 - CentOS
 
-推荐使用CentOS7以上版本。
+CentOS7 version and above are recommended.
 
 ```bash
 $ sudo yum install -y epel-release
@@ -42,45 +44,45 @@ $ sudo yum install -y openssl-devel openssl cmake3 gcc-c++ git
 
 - macOS
 
-推荐xcode10以上版本。macOS依赖包安装依赖于[Homebrew](https://brew.sh/)。
+xcode10 version and above are recommended. macOS dependent package installation depends on [Homebrew](https://brew.sh/).
 
 ```bash
 $ brew install -y openssl git
 ```
 
-### 克隆代码
+### Code clone
 
 ```bash
 $ git clone https://github.com/FISCO-BCOS/FISCO-BCOS.git
 ```
 
-### 编译
+### Compile
 
-编译完成后二进制文件位于`FISCO-BCOS/build/bin/fisco-bcos`。
+After compilation completes, binary file is located at `FISCO-BCOS/build/bin/fisco-bcos`.
 
 ```bash
 $ cd FISCO-BCOS
 $ git checkout master
 $ mkdir build && cd build
-# CentOS请使用cmake3
+# please use cmake3 for CentOS
 $ cmake ..
-# 高性能机器可添加-j4使用4核加速编译
+#To add -j4 to accelerate compilation by 4 compilation processes
 $ make
 ```
 
-### 编译选项介绍
+### Compile options
 
-- BUILD_GM，默认off，国密编译开关。通过`cmake -DBUILD_GM=on ..`打开国密开关。
+- BUILD_GM，off default, state secret compilation switch. Open it through `cmake -DBUILD_GM=on ..`
 
-- TESTS，默认off，单元测试编译开关。通过`cmake -DTESTS=on ..`打开单元测试开关。
+- TESTS, off default, unit test compilation switch. Open it through `cmake -DTESTS=on ..`
 
-- STATIC_BUILD，默认off，静态编译开关，只支持Ubuntu。通过`cmake -DSTATIC_BUILD=on ..`打开静态编译开关。
+- STATIC_BUILD, off default,static compilation switch，supports Ubuntu only. Open it through `cmake -DSTATIC_BUILD=on ..`
 
-- 生成源码文档。
+- Generate source document.
     ```bash
-    # 安装Doxygen
+    # Install Doxygen
     $ sudo apt install -y doxygen graphviz
-    # 生成源码文档 生成的源码文档位于build/doc
+    # Generate source documentation locate at build/doc
     $ make doc
     ```
 
