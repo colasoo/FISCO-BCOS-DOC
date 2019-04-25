@@ -96,39 +96,39 @@ After finishing the networking process above, agencies needs to accomplish the c
 
 ### Agency E adds new node to join group 1
 
-在这种场景中，机构E需要扩容一个节点进入group1中，如下表所示
+In this scenario, Agency E needs to add a node to join group 1 as below:
 
-| 节点序号 |   P2P地址     |   RPC/channel地址     |   所属机构     |   所在群组     |
+| Node no. |   P2P address     |   RPC/channel address     |   Belonged agency     |   Belonged group     |
 | :-----------: | :-------------: | :-------------: | :-------------: | :-------------: |
-|   节点0     | 127.0.0.1:30300| 127.0.0.1:8545/:20200 | 机构A | 群组1、2、3 |
-|   节点1     | 127.0.0.1:30301| 127.0.0.1:8546/:20201 | 机构B | 群组1 |
-|   节点2     | 127.0.0.1:30302| 127.0.0.1:8547/:20202 | 机构C | 群组2 |
-|   节点3     | 127.0.0.1:30303| 127.0.0.1:8548/:20203 | 机构D | 群组3 |
-|   节点4     | 127.0.0.1:30304| 127.0.0.1:8549/:20204 | 机构E | 群组1 |
+|   Node 0     | 127.0.0.1:30300| 127.0.0.1:8545/:20200 | Agency A | Group 1、2、3 |
+|   Node 1     | 127.0.0.1:30301| 127.0.0.1:8546/:20201 | Agency B | Group 1 |
+|   Node 2     | 127.0.0.1:30302| 127.0.0.1:8547/:20202 | Agency C | Group 2 |
+|   Node 3     | 127.0.0.1:30303| 127.0.0.1:8548/:20203 | Agency D | Group 3 |
+|   Node 4     | 127.0.0.1:30304| 127.0.0.1:8549/:20204 | Agency E | Group 1 |
 
 ![](../../images/enterprise/sample_star_3.png)
 
-过程如下：
+The process is as below:
 
-#### 机构E获取证书资格
+#### Agency acquires qualification for certidicate
 
-1. 机构E在本机生成使用`agency.key`
+1. Agency E generates `agency.key` locally.
 
-2. 机构E向第三方权威机构申请联盟链组网资格，由第三方权威机构根据group1的根证书`ca.crt`，签发`agency.crt`
+2. Agency applies for networking qualification from the third-party authority, who will issue `agency.crt` according to the root certificate of group 1 `ca.crt`.
 
-#### 机构E生成节点证书
+#### Agency E generates node certificate
 
-机构E用自己的机构私钥`agency.key`和机构证书`agency.crt`生成自己节点的证书cert_127.0.0.1_30304.crt。
+Agency E generates the node certificate cert_127.0.0.1_30304.crt using its private key and agency certificate.
 
-### 机构E生成group1扩容节点配置文件
+### Agency E generates the configuration file for node expansion in group 1.
 
-此时，group1已经存在，组网流程如下：
+Since group 1 has been formed, the networking process will be as below:
 
-1. 机构E向机构A或B请求group1配置文件，获取group1中已经运行群组创世区块`group.1.genesis`
+1. Agency E applies for group 1 configuration file and the Genesis Block `group.1.genesis` from Agency A or B.
 
-2. 机构E将节点4证书，fisco-bcos可执行程序，group1群组创世区块`group.1.genesis`放置于meta文件夹下
+2. Agency E places the Node 4 certificate, fisco-bcos executable program and group 1 Genesis Block `group.1.genesis` under meta folder.
 
-3. 机构E修改`node_deployment.ini`中的信息，配置为节点4的信息
+3. Agency E modifies information in `node_deployment.ini` and configures Node 4.
 
 4. 机构E使用[build_install_package](](./operation.html#build-install-package-b)命令生成节点4配置文件夹，启动节点
 
