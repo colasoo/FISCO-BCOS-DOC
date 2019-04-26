@@ -1,19 +1,19 @@
-# 建链脚本
+# Chain building script
 
 ```eval_rst
 .. important::
-    build_chain脚本目标是让用户最快的使用FISCO BCOS，对于企业级应用部署FISCO BCOS请参考 `企业级部署工具 <../enterprise_tools/index.html>`_ 。
+    The goal of the script is to let users apply FISCO BCOS as quickly as possible. For the enterprise applications deploying FISCO BCOS, please refer to `Enterprise Deployment Tools <../enterprise_tools/index.html>`_ .
 ```
 
-FISCO BCOS提供了`build_chain`脚本帮助用户快读搭建FISCO BCOS联盟链，该脚本默认从[GitHub](https://github.com/FISCO-BCOS/FISCO-BCOS)下载`master`分支最新版本预编译可执行程序进行相关环境的搭建。
+FISCO BCOS has provided `build_chain` script to help users quickly build FISCO BCOS alliance chain. By default, the script downloads `master` branch of the latest version pre-compiles executable program from [GitHub](https://github.com/FISCO-BCOS/FISCO-BCOS)for building related environment.
 
-## 脚本功能简介
+## Script Introduction
 
-- `build_chain`脚本用于快速生成一条链中节点的配置文件，脚本依赖于`openssl`请根据自己的操作系统安装`openssl 1.0.2`以上版本。脚本的源码位于[FISCO-BCOS/tools/build_chain.sh][build_chain]。
-- 快速体验可以使用`-l`选项指定节点IP和数目。`-f`选项通过使用一个指定格式的配置文件，支持创建各种复杂业务场景FISCO BCOS链。**`-l`和`-f`选项必须指定一个且不可共存**。
-- 建议测试时使用`-T`和`-i`选项，`-T`开启log级别到DEBUG，`-i`设置RPC和channel监听`0.0.0.0`，p2p模块默认监听`0.0.0.0`。
+- `build_chain` script is used to quickly generate configuration files of a chain node. For the script that depends on `openssl`, please according your own operating system to install `openssl 1.0.2` version and above. The source code of script is located at [FISCO-BCOS/tools/build_chain.sh][build_chain].
+- For quick experience can use the `-l` option to specify the node IP and number. `-f` option supports the creation of FISCO BCOS chains for complex business scenarios by using a configuration file in a specified format. **`-l` and `-f` options must be specified uniquely and cannot coexist**.
+- It is recommended to use `-T` and `-i` options for testing. `-T` enables log level to DEBUG. `-i` sets RPC and channel to listen for `0.0.0.0` while p2p module listens for `0.0.0.0` by default.
 
-## 帮助
+## Help
 
 ```bash
 Usage:
@@ -34,17 +34,17 @@ e.g
     build_chain.sh -l "127.0.0.1:4"
 ```
 
-## 选项介绍
+## Option Introduction
 
-- **`l`选项:** 
-用于指定要生成的链的IP列表以及每个IP下的节点数，以逗号分隔。脚本根据输入的参数生成对应的节点配置文件，其中每个节点的端口号默认从30300开始递增，所有节点属于同一个机构和Group。
+- **`l`option:** 
+Use to specify the chain to be generated and the number of nodes under each IP, separated by commas. The script generates configuration file of corresponding node according to the input parameters. The port number of each node is incremented from 30300 by default. All nodes belong to the same organization and Group.
 
-- **`f`选项** 
-    + 用于根据配置文件生成节点，相比于`l`选项支持更多的定制。
-    + 按行分割，每一行表示一个服务器，格式为`IP:NUM AgencyName GroupList`，每行内的项使用空格分割，不可有空行。
-    + `IP:NUM`表示机器的IP地址以及该机器上的节点数。`AgencyName`表示机构名，用于指定使用的机构证书。`GroupList`表示该行生成的节点所属的组，以`,`分割。例如`192.168.0.1:2 agency1 1,2`表示`ip`为`192.168.0.1`的机器上有两个节点，这两个节点属于机构`agency1`，属于group1和group2。
+- **`f`option** 
+    + Use to generate node according to configuration file. It supports more customization than `l` option.
+    + Split by row. Each row represents a server, in the format of `IP:NUM AgencyName GroupList`. Items in each line are separated by spaces, and there must be no blank lines.
+    + `IP:NUM` represents the IP address of the machine and the number of nodes on the machine.`AgencyName`represents the name of the institution to specifies the institution certificate to use. `GroupList` represents the group that the generated node belong to, split by`,`. For example, `192.168.0.1:2 agency1 1,2` represents that a machine with `ip` which is `192.168.0.1` exists two nodes. For example, 192.168.0.1:2 agency1 1,2 represents that there are two nodes on the machine with ip 192.168.0.1. These two nodes belong to agency `agency1` and belong to group1 and group2.
 
-下面是一个配置文件的例子，每个配置项以空格分隔，其中`GroupList`表示该服务器所属的组。
+The following is an example of a configuration file. Each configuration item separated by a space, where `GroupList` represents the group that the server belongs to.
 
 ```bash
 192.168.0.1:2 agency1 1,2
@@ -54,59 +54,60 @@ e.g
 192.168.0.4:2 agency2 3
 ```
 
-**假设上述文件名为`ipconf`**，则使用下列命令建链，表示使用配置文件，设置日志级别为`DEBUG`，监听`0.0.0.0`。
+**Suppose the above file is named `ipconf`**, using the following command to build a chain, which indicates to use configuration file, to set the log level to `DEBUG`, and to listen for `0.0.0.0`.
 
 ```bash
 $ bash build_chain.sh -f ipconf -T -i
 ```
 
-- **`e`选项[**Optional**]**
-用于指定`fisco-bcos`二进制所在的**完整路径**，脚本会将`fisco-bcos`拷贝以IP为名的目录下。不指定时，默认从GitHub下载`master`分支最新的二进制程序。
+- **`e`option[**Optional**]**
+is used to specify **full path** where `fisco-bcos` binary is located.Script will cope `fisco-bcos` to the directory named by IP number. If no path to be specified, the latest binary program of `master` branch is downloaded from GitHub by default.
+
 
 ```bash
-# 从GitHub下载下载最新release二进制，生成本机4节点
+# download the latest release binary from GitHub to generate native 4 nodes
 $ bash build_chain.sh -l "127.0.0.1:4"
-# 使用 bin/fisco-bcos 二进制，生成本机4节点
+# use bin/fisco-bcos binary to generate native 4 nodes
 $ bash build_chain.sh -l "127.0.0.1:4" -e bin/fisco-bcos 
 ```
 
-- **`o`选项[**Optional**]**
-指定生成的配置所在的目录。
+- **`o`option[**Optional**]**
+specifies the directory where the generated configuration is located.
 
-- **`p`选项[**Optional**]**
-指定节点的起始端口，每个节点占用三个端口，分别是p2p,channel,jsonrpc使用`,`分割端口，必须指定三个端口。同一个IP下的不同节点所使用端口从起始端口递增。
+- **`p`option[**Optional**]**
+specifies the starting port of the node. Each node occupies three ports which are p2p, channel, and jsonrpc, respectively. The ports are split by, and three ports must be specified. The ports used by different nodes under the same IP address are incremented from the starting port.
 
 ```bash
-# 两个节点分别占用`30300,20200,8545`和`30301,20201,8546`。
+# Two nodes occupies `30300,20200,8545` and `30301,20201,8546` respectively.
 $ bash build_chain -l 127.0.0.1:2 -p 30300,20200,8545
 ```
-- **`i`选项[**Optional**]**
-无参数选项，设置该选项时，设置节点的RPC和channel监听`0.0.0.0`
+- **`i`option[**Optional**]**
+No parameter option. When setting this option, to set the node's RPC and channel for listening to `0.0.0.0`.
 
-- **`c`选项[**Optional**]**
-无参数选项，设置该选项时，设置节点的共识算法为[Raft](../design/consensus/raft.md)，默认设置为[PBFT](../design/consensus/pbft.md)。
+- **`c`option[**Optional**]**
+No parameter option. When setting this option, to set the node’s consensus algorithm as [Raft](../design/consensus/raft.md), otherwise to set as [PBFT](../design/consensus/pbft.md) by default.
 
-- **`s`选项[**Optional**]**
-无参数选项，设置该选项时，节点使用[mptstate](../design/storage/mpt.md)存储合约局部变量，默认使用[storagestate](../design/storage/storage.md)存储合约局部变量。
+- **`s`option[**Optional**]**
+No parameter option. When setting this option, to use [mptstate](../design/storage/mpt.md) to store contract local variables, otherwise to use [storagestate](../design/storage/storage.md) by default.
 
-- **`g`选项[**Optional**]**
-无参数选项，设置该选项时，搭建国密版本的FISCO BCOS。**使用`g`选项时要求二进制fisoc-bcos为国密版本**。
+- **`g`option[**Optional**]**
+No parameter option. When setting this option, to set up the state secret version of FISCO BCOS. **The binary fisoc-bcos is required to be a state secret version when using the `g` option**.
 
-- **`z`选项[**Optional**]**
-无参数选项，设置该选项时，生成节点的tar包。
+- **`z`option[**Optional**]**
+No parameter option. When setting this option, to generate the tarball of node.
 
-- **`t`选项[**Optional**]**
-该选项用于指定生成证书时的证书配置文件。
+- **`t`option[**Optional**]**
+is used to specify the certificate configuration file when the certificate is generated.
 
-- **`T`选项[**Optional**]**
-无参数选项，设置该选项时，设置节点的log级别为DEBUG。log相关配置[参考这里](log_access.md)。
+- **`T`option[**Optional**]**
+No parameter option. When setting this option, to set the log level of the node to DEBUG. The related configuration of log can refer to [here](log_access.md).
 
-## 节点文件组织结构
+## Node file organization
 
-- cert文件夹下存放链的根证书和机构证书。
-- 以IP命名的文件夹下存储该服务器所有节点相关配置、`fisco-bcos`可执行程序、SDK所需的证书文件。
-- 每个IP文件夹下的`node*`文件夹下存储节点所需的配置文件。其中`config.ini`为节点的主配置，`conf`目录下存储证书文件和群组相关配置。配置文件详情，请[参考这里](configuration.md)。每个节点中还提供两个脚本，用于启动和停止节点。
-- 每个IP文件夹下的提供`start_all.sh`和`stop_all.sh`两个脚本用于启动和停止所有节点。
+- cert folder stores root certificate and organization certificate of the chain.
+- The folder named by IP address stores the certificate configuration file required by related configuration of all nodes , `fisco-bcos` executable program, and SDK in the server.
+- The `node*` folder under each IP folder stores configuration file required by the node. `config.ini` is the main configuration of node. In `conf` directory, to store certificate files and group related configurations. For the configuration detail, please refer to [here](configuration.md). Each node provides two scripts which are used to start and stop the node.
+- Under each IP folder, two scripts providing `start_all.sh` and `stop_all.sh` are used to start and stop all nodes.
 
 ```bash
 nodes/
@@ -146,16 +147,16 @@ nodes/
 │   └── cert.cnf
 ```
 
-## 使用举例
+## Example
 
-### 单服务器单群组
+### single-server and single-group
 
-构建本机上4节点的FISCO BCOS联盟链，使用默认起始端口`30300,20200,8545`（4个节点会占用`30300-30303`,`20200-20203`,`8545-8548`），监听外网`Channel`和`jsonrpc`端口允许外网通过SDK或API与节点交互。
+To build a 4-node FISCO BCOS alliance chain on native machine for using the default start port `30300,20200,8545` (4 nodes will occupy `30300-30303`,`20200-20203`,`8545-8548`) and listening to the external network `Channel` and `jsonrpc` ports while allowing the external network interacts with node through SDK or API.
 
 ```bash
-# 构建FISCO BCOS联盟链
+# to build FISCO BCOS alliance chain
 $ bash build_chain.sh -l "127.0.0.1:4" -i
-# 生成成功后，输出`All completed`提示
+# after generating successes, to output `All completed` to mention
 Generating CA key...
 ==============================================================
 Generating keys ...
@@ -175,8 +176,8 @@ Processing IP:127.0.0.1 Total:4 Agency:agency Groups:1
 [INFO] All completed. Files in /Users/fisco/WorkSpace/FISCO-BCOS/tools/nodes
 ```
 
-### 多服务器多群组
+### Multi-server and muti-group
 
-使用build_chain脚本构建多服务器多群组的FISCO BCOS联盟链需要借助脚本配置文件，详细使用方式可以[参考这里](../tutorial/group_use_cases.md)。
+Using the build_chain script to build a multi-server and multi-group FISCO BCOS alliance chain requires the script configuration file. For details, please refer to [here](../tutorial/group_use_cases.md).
 
 [build_chain]:https://github.com/FISCO-BCOS/FISCO-BCOS/blob/master/tools/build_chain.sh
