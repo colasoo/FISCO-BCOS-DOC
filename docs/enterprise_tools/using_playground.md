@@ -110,7 +110,7 @@ In this scenario, Agency E needs to add a node to join group 1 as below:
 
 The process is as below:
 
-#### Agency acquires qualification for certidicate
+#### Agency acquires qualification for certificate
 
 1. Agency E generates `agency.key` locally.
 
@@ -161,45 +161,44 @@ Given that Agency D wants to join group 1 formed by Agencies A, B, C.
 4. Agency D imports private key to the extended node configuration file folder and sends the folder to the assigned server, and activates node.
 5. Agency D requests one of the three Agencies A, B, C to register its node in group 1 to join the group.
 
-## 节点新建群组
+## Form new group
 
-在本场景中，链中的已有节点需要建立新群组。
+The case is that the nodes on chain want to form a new group. 
 
-假设节点均已建立为网络链接，需要建立新群组，如上述场景中A、B、C、D要新建立group3，则需要进行的操作如下：
+If networked nodes needs to form new group, given that the above Agencies A, B, C, D wants to form group 3, they should follow the steps below:
 
-1. A、B、C、D四个机构采用链下安全的方式共享自己的节点证书与节点信息（此步可选择由某一机构统一收集，或是所有机构都收集）
-2. A配置`group_genesis.ini`中的信息，将1中协商的证书放置与meta文件夹下
-3. A执行[create_group_genesis](./operation.html#create-group-config-c)命令，生成`group.3.genesis`和`group.3.ini`，将生成的配置信息发送给B、C、D
-4. A、B、C、D将生成`group.3.genesis`和`group.3.ini`拷贝到已存在的节点文件夹下，从启节点完成新群组的建立
+1. Agencies A, B, C, D share node certificate and information off chain (The collection work can be done by one or all of the four).
+2. A configures `group_genesis.ini` and places the agreed certificate under meta folder.
+3. A executes [create_group_genesis](./operation.html#create-group-config-c) instruction to generate `group.3.genesis` and `group.3.ini`, then sends the configuration information to B, C, D.
+4. A, B, C, D generate `group.3.genesis` and `group.3.ini`, copy to the existed folder and reactivate node to form a new group.
 
-## 组网模式分析
+## Networking models
 
-针对上述场景，FISCO BCOS generator将其总结为以下四种组网模式。
+In the above scenarios, FISCO BCOS generator concludes 4 networking models.
 
-设4个节点的地址为，由机构A生成群组创世区块：
+Given the 4 node each is in following address and Agency A is generator of Genesis Block:
 
-| 节点序号 |   P2P地址     |   RPC/channel地址     | 所属机构 |
+| Node no. |   P2P address     |   RPC/channel address     | Belonged agency |
 | :-----------: | :-------------: | :-------------: | :-------------: |
-|   节点0     | 127.0.0.1:30300| 127.0.0.1:8545/:20200 | 机构A |
-|   节点1     | 127.0.0.1:30301| 127.0.0.1:8546/:20201 | 机构A |
-|   节点2     | 127.0.0.1:30302| 127.0.0.1:8547/:20202 | 机构B |
-|   节点3     | 127.0.0.1:30303| 127.0.0.1:8548/:20203 | 机构C |
+|   Node 0     | 127.0.0.1:30300| 127.0.0.1:8545/:20200 | Agency A |
+|   Node 1     | 127.0.0.1:30301| 127.0.0.1:8546/:20201 | Agency A |
+|   Node 2     | 127.0.0.1:30302| 127.0.0.1:8547/:20202 | Agency B |
+|   Node 3     | 127.0.0.1:30303| 127.0.0.1:8548/:20203 | Agency C |
 
-### 简单模式组网
+### Simple model networking
 
 ![](../../images/enterprise/simple.png)
 
-简单模式组网可以适用于大多数单一业务的使用场景。整条链的所有节点都在唯一的一个群组中。
+Simple model networking can be applied in most single business application. All nodes on chain are in the one-and-only group.
 
-当业务的数据需要由区块链所有节点共识时，一般采用此模式组网
+When data needs to be commonly agreed by all nodes on blockchain, this model of networking is preferred.
 
-使用示例：
+Demonstration:
 
-用户操作如下：
+User should follow the steps below:
 
-1.用户生成证书，机构A收集所有证书
-
-2.机构A修改`group_genesis.ini`如下，生成群组创世区块`group.1.genesis`，发送给机构B、C
+1.User generates certificate. Agency A collects all certificates.
+2.Agency A modifies `group_genesis.ini` as below, generates Genesis Block `group.1.genesis` and sends to B, c:
 
 ```ini
 [group]
@@ -212,9 +211,9 @@ node2=127.0.0.1:30302
 node3=127.0.0.1:30303
 ```
 
-3.各个机构修改`node_deployment.ini`中的配置
+3.Each agency modifies configuration of `node_deployment.ini`
 
-机构A修改如下：
+Agency A modifies as below:
 
 ```ini
 [group]
@@ -236,7 +235,7 @@ channel_listen_port=20201
 jsonrpc_listen_port=8546
 ```
 
-机构B修改如下：
+Agency B modifies as below:
 
 ```ini
 [group]
@@ -251,7 +250,7 @@ channel_listen_port=20202
 jsonrpc_listen_port=8547
 ```
 
-机构C修改如下：
+Agency C modifies as below:
 
 ```ini
 [group]
@@ -266,29 +265,29 @@ channel_listen_port=20203
 jsonrpc_listen_port=8548
 ```
 
-3.使用[build_install_package](./operation.html#build-install-package-b)命令生成节点配置文件
+3.Generate node configuration file using [build_install_package](./operation.html#build-install-package-b) instruction
 
-4.启动节点
+4.Activate node
 
-### 网状模式组网
+### Webbed model networking
 
 ![](../../images/enterprise/net.png)
 
-网状模式组网适合有多个业务的场景，如一条链的不同节点需要有多个需要共识的业务账本。当业务没有交叉时，彼此之间的账本是独立的，可以采用此模式组网。
+Webbed model networking adapts to multiple application scenarios. For example, nodes on a chain needs multiple commonly-agreed ledgers. When the scenarios and the ledgerare are independent, this model of networking is preferred.
 
-使用示例：
+Demonstration:
 
-用户操作如下：
+User should follow the steps below:
 
-1.用户生成证书，机构A收集所有证书
+1.User generates certificate. Agency A collects certificates.
 
-2.机构A修改`group_genesis.ini`如下，生成群组创世区块`group.1.genesis`，发送给机构B
+2.Agency A modifies `group_genesis.ini` as below, generates Genesis Block `group.1.genesis` and sends to Agency B.
 
-3.机构A修改`group_genesis.ini`如下，生成群组创世区块`group.2.genesis`，发送给机构B、C
+3.Agency A modifies `group_genesis.ini` as below, generates Genesis Block `group.2.genesis` and sends to Agency B.
 
-4.各机构修改`node_deployment.ini`中的配置
+4.Each agency modifies the configuration of `node_deployment.ini`.
 
-机构A修改如下：
+Agency A modifies as below:
 
 ```ini
 [group]
@@ -310,7 +309,7 @@ channel_listen_port=20201
 jsonrpc_listen_port=8546
 ```
 
-机构B修改如下：
+Agency B modifies as below:
 
 ```ini
 [group]
@@ -325,7 +324,7 @@ channel_listen_port=20202
 jsonrpc_listen_port=8547
 ```
 
-机构C修改如下：
+Agency C modifies as below:
 
 ```ini
 [group]
@@ -340,26 +339,25 @@ channel_listen_port=20203
 jsonrpc_listen_port=8548
 ```
 
-5.各机构使用[build_install_package](./operation.html#build-install-package-b)命令生成节点配置文件夹，机构A将group.2.genesis导入节点0的conf文件夹，机构B将group.2.genesis导入节点2的conf文件夹
+5.Each agency generates node configuration file folder using [build_install_package](./operation.html#build-install-package-b) instruction. Agency A imports group.2.genesis to Node 0 conf folder. Agency B imports group.2.genesis to Node 2 conf folder.
 
-6.启动节点
+6.Activate node.
 
-### 星型模式组网
+### Star schema networking
 
 ![](../../images/enterprise/star.png)
 
-星型模式组网适合某一机构与其他机构有较多的交叉，但是其他机构之间通信较少的业务模式。
+Star schema networking is applied when an agency interacts with other agencies, and there are little communication between other agencies.
 
-在这种模式中，节点0需要与其他所有节点交互，而节点1、2、3只需关心与节点0的交互即可
+In this model, Node 0 interacts with other nodes 1, 2, 3, each of which focus only on the communication with node 0.
 
-使用示例：
+Demonstration:
 
-用户操作如下：
+User should follow the steps below:
 
-1.所有机构生成证书、机构A收集证书
+1.All agencies generates certificates. Agency A collects certificates.
 
-2.机构A修改`group_genesis.ini`如下所示：
-
+2.Agency A modifies `group_genesis.ini` as below:
 ```ini
 [group]
 group_id=1
@@ -387,11 +385,11 @@ node0=127.0.0.1:30300
 node1=127.0.0.1:30303
 ```
 
-生成`group.1.genesis`用于本机构组网，`group.2.genesis`发送给机构B，`group.3.genesis`发送给机构C。
+generates `group.1.genesis` for networking, sends `group.2.genesis` to Agency B and `group.3.genesis` to Agency C.
 
-3.各机构分别修改`node_deployment.ini`中的配置如下所示
+3.Each agency modifies configuration of `node_deployment.ini` as below:
 
-机构A：
+Agency A:
 
 ```ini
 [group]
@@ -413,7 +411,7 @@ channel_listen_port=20201
 jsonrpc_listen_port=8546
 ```
 
-机构B：
+Agency B:
 
 ```ini
 [group]
@@ -428,7 +426,7 @@ channel_listen_port=20202
 jsonrpc_listen_port=8547
 ```
 
-机构C：
+Agency C:
 
 ```ini
 [group]
@@ -443,33 +441,33 @@ channel_listen_port=20203
 jsonrpc_listen_port=8548
 ```
 
-各机构通过上述配置文件，使用[build_install_package](./operation.html#build-install-package-b)命令生成节点配置文件夹
+According to the configuration file above, each agency generates node configuration file folder using [build_install_package](./operation.html#build-install-package-b) command.
 
-4.机构A还需将`group.2.genesis`，`group.2.ini`，`group.3.genesis`,`group.2.ini`放置于节点0的conf目录下，启动节点
+4.Agency A needs to place `group.2.genesis`, `group.2.ini`, `group.3.genesis`, `group.2.ini` under node 0 conf section and activate node.
 
-### 隔离模式组网
+### Isolated model networking
 
 ![](../../images/enterprise/ring.png)
 
-隔离模式组网适合多个机构之间经常有业务账本隔离需求的场景。
+Isolated model of networking is applied when agencies need to isolate their ledgers.
 
-使用示例：
+Demonstration:
 
-用户操作如下：
+User should follow the steps below:
 
-1.各机构生成证书，机构A收集证书
+1.Each agency generates certificate. Agency A collects certificates.
 
-2.机构A分别修改`group_genesis.ini`如下所示：
+2.Agency A modifies `group_genesis.ini` as below:
 
 ```ini
-#群组1配置文件
+# Group 1 configuration file
 [group]
 group_id=1
 
 [nodes]
 node0=127.0.0.1:30300
 node2=127.0.0.1:30302
-# 群组2配置文件
+# Group 2 configuration file
 [group]
 group_id=2
 
@@ -478,9 +476,9 @@ node0=127.0.0.1:30301
 node2=127.0.0.1:30303
 ```
 
-3.各机构修改`node_deployment.ini`中的配置如下：
+3.Each agency modifies configuration of `node_deployment.ini` as below:
 
-机构A：
+Agency A:
 
 ```ini
 [group]
@@ -502,7 +500,7 @@ channel_listen_port=20201
 jsonrpc_listen_port=8546
 ```
 
-机构B：
+Agency B:
 
 ```ini
 [group]
@@ -517,7 +515,7 @@ channel_listen_port=20202
 jsonrpc_listen_port=8547
 ```
 
-机构C：
+Agency C:
 
 ```ini
 [group]
@@ -532,7 +530,7 @@ channel_listen_port=20203
 jsonrpc_listen_port=8548
 ```
 
-4.机构使用[build_install_package](./operation.html#build-install-package-b)命令生成节点配置文件夹
+4.Each agency generates node configuration file folder using [build_install_package](./operation.html#build-install-package-b) command.
 
-5.机构A将节点1中节点创世区块替换为`group.2.genesis`，`group.2.ini`，启动节点
+5.Agency A replaces the Genesis Block of Node 1 with `group.2.genesis` and `group.2.ini` and activates node.
 
