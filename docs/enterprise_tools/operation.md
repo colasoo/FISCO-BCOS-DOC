@@ -74,28 +74,28 @@ FISCO BCOS generator provides multiple functions of node generation, expansion, 
 
 | Command | Basic function |
 | :-: | :-: |
-| create_group_genesis | assigned folder | 在指定文件夹下根据group_genesis.ini和meta下的证书生成群组创世区块文件 |
-| build_install_package | 在指定文件夹下生成node_deployment.ini中配置的<br>节点配置文件夹（需要在meta下存放生成节点的证书） |
-| generate_all_certificate | 根据node_deployment.ini生成相关节点证书和私钥 |
-| generate_*_certificates | 生成相应链、机构、节点、sdk证书及私钥 |
-| merge_config | 将两个节点配置文件中的P2P部分合并 |
-| deploy_private_key | 将私钥批量导入生成的节点配置文件夹中 |
-| add_peers | 将节点连接文件批量导入节点配置文件夹中 |
-| add_group | 将群组创世区块批量导入节点配置文件夹中 |
-| version | 打印当前版本号 |
-| h/help | 帮助命令 |
+| create_group_genesis | assign folder | generate group Genesis Block in assigned folder according to group_genesis.ini and the certificates in meta folder |
+| build_install_package | generate <br> node configuration file folder of node_deployment.ini in assigned folder (node certificate should be placed in meta folder) |
+| generate_all_certificate | generate node certificate and private key according to node_deployment.ini |
+| generate_*_certificates | generate chain, agency, node, sdk certificate or private key |
+| merge_config | merge p2p parts of the two configuration files |
+| deploy_private_key | import private keys in batch to the generated node configuration file folder |
+| add_peers | import node connection files in batch to node configuration file folder |
+| add_group | import Genesis Blocks in batch to node configuration file folder |
+| version | print current version code |
+| h/help | help command |
 
 ### create_group_genesis (-c)
 
 |  |  |
 | :-: | :-: |
-| 命令解释 | 生成群组创世区块 |
-| 使用前提 | 用户需配置`group_genesis.ini`，并在meta下配置相关节点的证书  |
-| 参数设置 | 指定生成群组节点配置文件夹 |
-| 实现功能 | 根据用户在meta下配置的证书，在指定目录生成新群组的配置 |
-| 适用场景 | 联盟链中已有节点从新划分群组时 |
+| Command description | generate group Genesis Block |
+| Premise of use | user needs to configure `group_genesis.ini` and node certificates under meta folder.  |
+| Parameter setting | assign and generate node configuration file folder for group |
+| Function | generate configuration of new group under assigned section according to the certificates user configured under meta folder |
+| Adaptable scenario | the existed nodes on consortium chain needs to form new group |
 
-操作示例
+Operation Tutorial
 
 ```bash
 $ cp node0/node.crt ./meta/cert_127.0.0.1_3030n.crt
@@ -104,107 +104,107 @@ $ vim ./conf/group_genesis.ini
 $ ./generator --create_group_genesis ~/mydata
 ```
 
-程序执行完成后，会在~/mydata文件夹下生成mgroup.ini中配置的`group.i.genesis`
+After the program is executed, `group.i.genesis` of mgroup.ini will be generated under ~/mydata folder
 
-用户生成的`group.i.genesis`即为群组的创世区块，即可完成新群组划分操作。
+The generated `group.i.genesis` is the Genesis Block of the new group.
 
 ```eval_rst
 .. note::
-    FISCO BCOS 2.0中每个群组都会有一个群组创世区块。
+    In FISCO BCOS 2.0, each group has one Genesis Block.
 ```
 
 ### build_install_package (-b)
 
 |  |  |
 | :-: | :-: |
-| 命令解释 | 部署新节点及新群组 |
-| 使用前提 | 用户需配置`node_deployment.ini`，并指定节点p2p链接文件  |
-| 参数设置 | 指定文件夹作为配置文件夹存放路径 |
-| 实现功能 | 通过给定群组创世区块、节点证书和节点信息，生成节点配置文件夹 |
-| 适用场景 | 生成节点配置文件夹 |
+| Command description | deploy new node and new group |
+| Premise of use | user needs to configure `node_deployment.ini` and assign p2p connection file  |
+| Parameter setting | assign file folder for the location of configuration file folder |
+| Function | generate node configuration file folder according to Genesis Block, node certificate and node information |
+| Adaptable scenario | generate node configuration file folder |
 
-操作示例
+Operation Tutorial
 
 ```bash
 $ vim ./conf/node_deployment.ini
 $ ./generator --build_install_package ./peers.txt ~/mydata
 ```
 
-程序执行完成后，会在~/mydata文件夹下生成多个名为node_hostip_port的文件夹，推送到对应服务器后即可启动节点
+After the program is executed, a few file folders named node_hostip_port will be generated under ~/mydata folder and pushed to the relative server to activate node.
 
 ### generate_chain_certificate
 
 |  |  |
 | :-: | :-: |
-| 命令解释 | 生成根证书 |
-| 使用前提 | 无 |
-| 参数设置 | 指定根证书存放文件夹 |
-| 实现功能 | 在指定目录生成根证书和私钥 |
-| 适用场景 | 用户需要生成自签相关根证书 |
+| Command description | generate root certificate |
+| Premise of use | no |
+| Parameter setting | assign file folder for root certificate |
+| Function | generate root certificate and private key under assigned section |
+| Adaptable scenario | user needs to generate self-sign root certificate |
 
 ```bash
 $ ./generator --generate_chain_certificate ./dir_chain_ca
 ```
 
-执行完成后用户可以在./dir_chain_ca文件夹下看到根证书`ca.crt` 和私钥`ca.key`。
+Now, user can find root certificate `ca.crt` and private key `ca.key` under ./dir_chain_ca folder.
 
 ### generate_agency_certificate
 
 |  |  |
 | :-: | :-: |
-| 命令解释 | 生成机构证书 |
-| 使用前提 | 存在根证书和私钥 |
-| 参数设置 | 指定机构证书目录，链证书及私钥存放目录和机构名称 |
-| 实现功能 | 在指定目录生成机构证书和私钥 |
-| 适用场景 | 用户需要生成自签相关机构证书 |
+| Command description | generate agency certificate |
+| Premise of use | root certificate and private key have been created |
+| Parameter setting | assign section for agency certificate, chain certificate and private key and create agency name |
+| Function | generate agency certificate and private key under assigned secton |
+| Adaptable scenario | user needs to generate self-sign agency certificate |
 
 ```bash
 $ ./generator --generate_agency_certificate ./dir_agency_ca ./chain_ca_dir The_Agency_Name
 ```
 
-执行完成后可以在./dir_agency_ca路径下生成名为The_Agency_Name的文件夹，包含相应的机构证书`agency.crt` 和私钥`agency.key`。
+Now, user can locate The_Agency_Name folder containing agency certificate `agency.crt` and private key `agency.key` through route ./dir_agency_ca.
 
 ### generate_node_certificate
 
 |  |  |
 | :-: | :-: |
-| 命令解释 | 生成节点证书 |
-| 使用前提 | 存在机构证书和私钥 |
-| 参数设置 | 指定节点证书目录，机构证书及私钥存放目录和节点名称 |
-| 实现功能 | 在指定目录生成节点证书和私钥 |
-| 适用场景 | 用户需要生成自签相关节点证书 |
+| Command description | generate node certificate |
+| Premise of use | agency certificate and private key have been created |
+| Parameter setting | assign section for node certificate, agency certificate and private key and create node name |
+| Function | generate node certificate and private key under assigned secton |
+| Adaptable scenario | user need to generate self-sign node certificate |
 
 ```bash
 $ ./generator --generate_node_certificate node_dir(SET) ./agency_dir  node_p2pip_port
 ```
 
-执行完成后可以在node_dir 路径下生成节点证书`node.crt` 和私钥`node.key`。
+Then user can locate node certificate `node.crt` and private key `node.key` through route node_dir.
 
 ### generate_sdk_certificate
 
 |  |  |
 | :-: | :-: |
-| 命令解释 | 生成SDK证书 |
-| 使用前提 | 存在机构证书和私钥 |
-| 参数设置 | 指定节点证书目录，机构证书及私钥存放目录和节点名称 |
-| 实现功能 | 在指定目录生成SDK证书和私钥 |
-| 适用场景 | 用户需要生成自签相关SDK证书 |
+| Command description | generate SDK certificate |
+| Premise of use | agency certificate and private key have been created |
+| Parameter setting | assign section for node certificate, agency certificate and private key and create node name |
+| Function | generate SDK certificate and privte key under assigned section |
+| Adaptable senario | user needs to generate self-sign SDK certificate |
 
 ```bash
 $ ./generator --generate_sdk_certificate ./dir_sdk_ca ./dir_agency_ca
 ```
 
-执行完成后可以在./dir_sdk_ca路径下生成名为SDK的文件夹，包含相应的SDK证书`node.crt` 和私钥`node.key`。
+Now user can locate SDK file folder containing SDK certificate `node.crt` and private key `node.key` through route ./dir_sdk_ca.
 
 ### generate_all_certificates
 
 |  |  |
 | :-: | :-: |
-| 命令解释 | 根据node_deployment.ini生成相关证书及私钥 |
-| 使用前提 | 无 |
-| 参数设置 | 指定节点证书目录 |
-| 实现功能 | 根据node_deployment.ini在meta下生成节点私钥、证书，在指定目录生成中需要交换的节点证书、节点p2p连接文件 |
-| 适用场景 | 用户交换节点数据时 |
+| Command descrition | generate certificates and private key according to node_deployment.ini |
+| Premise of use | no |
+| Parameter setting | assign section for node certificate |
+| Function | generate private key and node certificate under meta folder, generate node certificate for exchanging and p2p connection file under assigned section according to node_deployment.ini |
+| Adaptable scenario | user needs to exchange data with other nodes |
 
 ```
 $ ./generator --generate_all_certificates ./cert
@@ -212,19 +212,19 @@ $ ./generator --generate_all_certificates ./cert
 
 ```eval_rst
 .. note::
-    上述命令会根据meta目录下存放的ca.crt、机构证书agency.crt和机构私钥agency.key生成相应的节点证书。
+    the above command will create node certificate according to ca.crt, agency certificate agency.crt and agency private key agency.key of meta folder.
 
-    - 如果用户缺少上述三个文件，则无法生成节点证书，程序会抛出异常。
+    - absence of any of the above 3 files will fail the creation of node certificate, and the program will throw an exception
 
 ```
 
-执行完成后会在./cert文件夹下生成节点的相关证书与私钥，并将节点证书放置于./meta下
+Once the execution is done, user can find node certificate and private key under ./cert folder, and node certificate under ./meta folder.
 
 ### merge_config (-m)
 
-使用--merge_config命令可以合并两个config.ini中的p2p section
+--merge_config command can merge p2p sections of 2 config.ini
 
-如 A目录下的config.ini文件的p2p section为
+For instance, the p2p section in config.ini of A is:
 
 ```ini
 [p2p]
@@ -236,7 +236,7 @@ node.2 = 127.0.0.1:30302
 node.3 = 127.0.0.1:30303
 ```
 
-B目录下的config.ini文件的p2p section为
+the p2p section in config.ini of B is:
 
 ```ini
 [p2p]
@@ -247,7 +247,7 @@ node.1 = 127.0.0.1:30303
 node.2 = 192.167.1.1:30300
 node.3 = 192.167.1.1:30301
 ```
-使用此命令后会成为：
+the command will result in:
 
 ```ini
 [p2p]
@@ -261,7 +261,7 @@ node.4 = 192.167.1.1:30300
 node.5 = 192.167.1.1:30301
 ```
 
-使用示例
+User Case
 
 ```bash
 $ ./generator --merge_config ~/mydata/node_A/config.ini  ~/mydata/node_B/config.ini
