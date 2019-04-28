@@ -1,16 +1,16 @@
-# 操作手册
+# Operation Tutorial
 
-## 配置文件夹conf
+## Configuration file folder: conf
 
-FISCO BCOS generator的配置文件在./conf文件夹下，配置文件为：群组创世区块配置文件`group_genesis.ini`和生成节点配置文件`node_deployment.ini`。
+The configuration files of FISCO BCOS generator is placed under ./conf folder, including Genesis Block configuration file `group_genesis.ini` and node configuration file `node_deployment.ini`.
 
-用户通过对conf文件夹下文件的操作，配置生成节点配置文件夹的具体信息。
+By modifying the configuration files under conf folder, users configure the specific information of generated node.
 
-### 元数据文件夹meta
+### Metadata file folder: meta
 
-FISCO BCOS generator的meta文件夹为元数据文件夹，需要存放`fisco bcos`二进制文件、链证书`ca.crt`、本机构机构证书`agency.crt`、机构私钥节点证书、群组创世区块文件等。
+The meta folder of FISCO BCOS generator is placed with metadata files, including binary file `fisco bcos`, chain certificate `ca.crt`, agency certificate`agency.crt`, private key certificate and Genesis Block file, etc..
 
-证书的存放格式需要为cert_p2pip_port.crt的格式，如cert_127.0.0.1_30300.crt。
+The format of certificates should be cert_p2pip_port.crt. For example, cert_127.0.0.1_30300.crt.
 
 FISCO BCOS generator会根据用户在元数据文件夹下放置的相关证书、conf下的配置文件，生成用户下配置的节点配置文件夹。
 
