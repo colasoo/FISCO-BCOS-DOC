@@ -1,12 +1,12 @@
 # Operation Tutorial
 
-## Configuration file folder: conf
+## Configuration file folder/conf
 
 The configuration files of FISCO BCOS generator is placed under ./conf folder, including Genesis Block configuration file `group_genesis.ini` and node configuration file `node_deployment.ini`.
 
 By modifying the configuration files under conf folder, users configure the specific information of generated node.
 
-### Metadata file folder: meta
+### Metadata file folder/meta
 
 The meta folder of FISCO BCOS generator is placed with metadata files, including binary file `fisco bcos`, chain certificate `ca.crt`, agency certificate`agency.crt`, private key certificate and Genesis Block file, etc..
 
@@ -443,19 +443,19 @@ Purpose of use:
 3. to analyze printing of node logs in last 1 minutes, to collect critical errors information of printed logs, to monitor status of node in real time
 4. to assign log file or time period, to analyze information of consensus message management, block generation and transaction volume and node's health. 
 
-### Configuration warning service
+### Warning service configuration
 
-用户使用前，首先需要配置告警信息服务，这里以[server酱](http://sc.ftqq.com/3.version)的微信推送为例，可以参考配置[server酱](http://sc.ftqq.com/3.version)
+Before using this service, user needs to configure the warning service. Here we take the WeChat notification of [server酱](http://sc.ftqq.com/3.version) as an example. You can read the configuration as reference: [server酱](http://sc.ftqq.com/3.version)
 
-绑定自己的github账号，以及微信后，可以使用本脚本向微信发送告警信息，使用本脚本的-s命令 可以向指定微信发送告警信息
+User associates it with personal github account and WeChat account, then uses -s command of this script to send warning message to the associated WeChat.
 
-如果用户希望使用其他服务，可以修改monitor.sh中的alarm() {
+If user wants to try different services, user can personalize the service by modifying alarm() {
     # change http server  
-}函数，个性化配置为自己需要的服务
+} function of monitor.sh
 
-### help命令
+### help command
 
-使用help命令查看脚本使用方式
+The way to check the usage of script by help command
 
 ```bash
 $ ./monitor.sh -h
@@ -475,33 +475,33 @@ Usage : bash monitor.sh
    bash  monitor.sh -s YourHttpAddr -m statistics -f node0/log/log_2019021314.log -g 1 2 -r your_name
 ```
 
-命令解释如下：
+Command description:
 
-- -s 指定告警配置地址，可以配置为告警上报服务的ip
-- -m 设定监控模式，可以配置为statistics和monitor两种模式，默认为monitor模式。
-- -f 分析节点log
-- -o 指定节点路径
-- -p 设定监控上报名称，默认为fisco-bcos
-- -g 指定监控群组，默认分析所有群组
-- -d log分析时间范围，默认10分钟内的log，最大不超过60分钟
-- -r 指定上报接收者名称
-- -h 帮助命令
+- -s assign the configuration address of warning service. It can be the ip of warning notification.
+- -m set monitor mode to statistics or monitor. Monitor is the default mode.
+- -f analyze node log
+- -o assign location of node
+- -p set notification name. "fisco-bcos" is the default one.
+- -g assign group to be monitored. All group is defaulted to be monitored.
+- -d time scope of log analysis. Default to be within 10 minutes and 60 minutes as the maximum
+- -r assign the receiver of warning notification
+- -h help command
 
-### 使用示例
+### For example
 
-- 使用脚本监控指定路径下节点，发送给接收者Alice：
+- use script to monitor status of assigned nodes, send message to receiver Alice:
 
 ```bash
 $ bash monitor.sh -s https://sc.ftqq.com/[SCKEY(登入后可见)].send -o alice/nodes -r Alice
 ```
 
-- 使用脚本统计指定路径下节点信息，发送给接收者Alice
+- use script to collect node information and send message to Alice:
 
 ```bash
 $ bash monitor.sh -s https://sc.ftqq.com/[SCKEY(登入后可见)].send -m statistics -o alice/nodes -r Alice
 ```
 
-- 使用脚本统计指定路径下节点指定log指定群组1和群组2的信息，发送给接收者Alice
+- use script to collect information of group 1 and group 2 of specific node log, send message to Alice:
 
 ```bash
 $ bash monitor.sh -s https://sc.ftqq.com/[SCKEY(登入后可见)].send -m statistics -f node0/log/log_2019021314.log -g 1 2 -o alice/nodes -r Alice
