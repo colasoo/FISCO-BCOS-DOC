@@ -6,14 +6,14 @@
 
 - It eliminates the complexity of generating and maintaining blockchain and offers alternative deployment methods.
 - It requires agencies to share node credentials and manage their own private key but not expose to outsider, maintaining security of all nodes.
-- It helps agencies deploy nodes safely through e-credential trading, maintaining equality of all nodes.
+- It helps agencies deploy nodes safely through e-certificate trading, maintaining equality of all nodes.
 
 ![](../../images/enterprise/toolshow.png)
 
 **Design background**
 
-There cannot be exhaustive trust between equal agencies in consortium chain, where e-credentials will be needed for nodes to authenticate each other’s identity.
-Credential is the identity documentation for each agency. And the generation of credential depends on its own public & private key pair. Private key represents its identity information that is private and strictly confidential. In the process of activation and operation, node signs on the data packet with private key in order to fulfill identity authentication. Provided that an agency’s private key is revealed, anyone else can pretend as the owner and get authorized without affirmation of this agency.
+There cannot be exhaustive trust between equal agencies in consortium chain, where e-certificate will be needed for nodes to authenticate each other’s identity.
+Certificate is the identity documentation for each agency. And the generation of certificate depends on its own public & private key pair. Private key represents its identity information that is private and strictly confidential. In the process of activation and operation, node signs on the data packet with private key in order to fulfill identity authentication. Provided that an agency’s private key is revealed, anyone else can pretend as the owner and get authorized without affirmation of this agency.
 
 ```eval_rst
 .. important::
@@ -43,7 +43,7 @@ Safety:
 
 - Allow multiple changes in architecture
 - Private key is kept internally
-- Negotiation between agencies is based on credentials only
+- Negotiation between agencies is based on certificates only
 
 Ease-to-use:
 
