@@ -12,11 +12,11 @@ The meta folder of FISCO BCOS generator is placed with metadata files, including
 
 The format of certificates should be cert_p2pip_port.crt. For example, cert_127.0.0.1_30300.crt.
 
-FISCO BCOS generator会根据用户在元数据文件夹下放置的相关证书、conf下的配置文件，生成用户下配置的节点配置文件夹。
+FISCO BCOS generator will generate a node configuration file folder, according to the certificates and configuration files user places under meta folder or conf folder.
 
 ### group_genesis.ini
 
-通过修改`group_genesis.ini`的配置，用户在指定目录及meta文件夹下生成新群组创世区块的相关配置，如`group.1.genesis`。
+Through modifying the configuration of `group_genesis.ini`, user generates the configuration file for new Genesis Block under assigned section and meta folder. For example, `group.1.genesis`.
 
 ```ini
 [group]
@@ -24,7 +24,7 @@ group_id=1
 
 [nodes]
 node0=127.0.0.1:30300
-;群组创世区块的节点p2p地址
+;the node p2p ip of Genesis Block
 node1=127.0.0.1:30301
 node2=127.0.0.1:30302
 node3=127.0.0.1:30303
@@ -32,14 +32,14 @@ node3=127.0.0.1:30303
 
 ```eval_rst
 .. important::
-    生成群组创世区块时需要节点的证书，如上述配置文件中需要4个节点的证书。分别为：cert_127.0.0.1_30301.crt，cert_127.0.0.1_30302.crt，cert_127.0.0.1_30303.crt和cert_127.0.0.1_30304.crt。
+    The creation of Genesis Block needs node certificates. In the above example, it needs certificates of 4 nodes, including cert_127.0.0.1_30301.crt，cert_127.0.0.1_30302.crt，cert_127.0.0.1_30303.crt和cert_127.0.0.1_30304.crt.
 ```
 
 ### node_deployment.ini
 
-通过修改`node_deployment.ini`的配置，用户可以使用--build_install_package命令在指定文件夹下生成节点不含私钥的节点配置文件夹。用户配置的每个`section[node]`即为用户需要生成的节点配置文件夹.`section[peers]`为需要连接的其他节点p2p信息。
+Through modifying the configuration of `node_deployment.ini`, user can generate node configuration file folder under assigned section that contains no private key using --build_install_package command. `section[node]` is the node configuration file folder generated and configured by user. `section[peers]` contains the p2p information of the connected peer nodes.
 
-配置文件示例如下：
+Example of configuration file:
 
 ```ini
 [group]
@@ -61,20 +61,20 @@ channel_listen_port=20201
 jsonrpc_listen_port=8546
 ```
 
-上述配置在执行build命令后会在指定目录下生成名为node_127.0.0.1_30300、node_127.0.0.1_30301的配置文件夹。生成的节点处于群组group1中。
+In the above example, user will generates a node configuration file folder named node_127.0.0.1_30300、node_127.0.0.1_30301 after executing build command. The generated node will belong to Group 1.
 
 ```eval_rst
 .. note::
-    生成节点配置文件夹时只需要自己节点的证书，如上述操作中，需要的证书为：cert_127.0.0.1_30300.crt和cert_127.0.0.1_30301.crt
+    The generation of node configuration file folder needs the node certificate only. In the above example, the certificate will be cert_127.0.0.1_30300.crt和cert_127.0.0.1_30301.crt
 ```
 
-## 命令详解
+## Command in detail
 
-FISCO BCOS generator 提供多种节点生成、扩容、群组划分、证书相关操作，简略介绍如下：
+FISCO BCOS generator provides multiple functions of node generation, expansion, group division and certificate. Here is a brief introduction:
 
-| 命令名称 | 基本功能 |
+| Command | Basic function |
 | :-: | :-: |
-| create_group_genesis | 指定文件夹 | 在指定文件夹下根据group_genesis.ini和meta下的证书生成群组创世区块文件 |
+| create_group_genesis | assigned folder | 在指定文件夹下根据group_genesis.ini和meta下的证书生成群组创世区块文件 |
 | build_install_package | 在指定文件夹下生成node_deployment.ini中配置的<br>节点配置文件夹（需要在meta下存放生成节点的证书） |
 | generate_all_certificate | 根据node_deployment.ini生成相关节点证书和私钥 |
 | generate_*_certificates | 生成相应链、机构、节点、sdk证书及私钥 |
