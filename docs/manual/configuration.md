@@ -1,53 +1,58 @@
-# 配置文件与配置项
+# Configuration files and configuration items
 
-FISCO BCOS支持多账本，每条链包括多个独立账本，账本间数据相互隔离，群组间交易处理相互隔离，每个节点包括一个主配置`config.ini`和多个账本配置`group.group_id.genesis`、`group.group_id.ini`。
+FISCO BCOS supports multiple ledger. Each chain includes multiple unique ledgers, whose data among them are isolated from each other. And the transaction processing among groups are alos isolated. Each node includes a main configuration `config.ini` and multiple ledger configurations `group.group_id.genesis`, `group.group_id.ini`.
 
-- `config.ini`：主配置文件，主要配置RPC、P2P、SSL证书、账本配置文件路径等信息。
-- `group.group_id.genesis`：群组配置文件，群组内所有节点一致，节点启动后，不可手动更改该配置。主要包括群组共识算法、存储类型、最大gas限制等配置项。
-- `group.group_id.ini`：群组可变配置文件，包括交易池大小等，配置后重启节点生效。
+- `config.ini`: main configurations file. It mainly configures information such as RPC, P2P, SSL certificate, and ledger configuration file path.
 
-## 硬件要求
+- `group.group_id.genesis`：group configurations file. All nodes in the group are consistent. After node launches, you cannot manually change the configuration including items like group consensus algorithm, storage type, and maximum gas limit, etc.
+- `group.group_id.ini`：group variable configuration file, including the transaction pool size, etc.. All configuration changes are effective after node restarts.
+
+
+## Hardware requirements
 
 ```eval_rst
 .. note::
-    由于节点多群组共享网络带宽、CPU和内存资源，因此为了保证服务的稳定性，一台机器上不推荐配置过多节点。
+    Since multiple nodes share network bandwidth, CPU, and memory resources, it is not recommended to configure too much nodes on one machine in order to ensure the stability of service.
+
 ```
 
-下表是单群组单节点推荐的配置，节点耗费资源与群组个数呈线性关系，您可根据实际的业务需求和机器资源，合理地配置节点数目。
+The following table is a recommended configuration for single-group and single-node. Node consumes resources in a linear relationship with the number of groups. You can configure the number of nodes reasonably according to actual business requirement and machine resource.
+
 
 ```eval_rst
 +----------+---------+---------------------------------------------+
-| 配置     | 最低配置| 推荐配置                                    |
+| configuration     | minimum | recommended                                    |
 +==========+=========+=============================================+
 | CPU      | 1.5GHz  | 2.4GHz                                      |
 +----------+---------+---------------------------------------------+
-| 内存     | 1GB     | 8GB                                         |
+| memory     | 1GB     | 8GB                                         |
 +----------+---------+---------------------------------------------+
-| 核心     | 1核     | 4核                                         |
+| core     | 1 core     | 4 cores                                         |
 +----------+---------+---------------------------------------------+
-| 带宽     | 1Mb     | 10Mb                                        |
+| bandwidth     | 1Mb     | 10Mb                                        |
 +----------+---------+---------------------------------------------+
 ```
 
-## 主配置文件config.ini
+## Main configuration file config.ini
 
-`config.ini`采用`ini`格式，主要包括 **rpc、p2p、group、secure和log** 配置项。
+`config.ini` uses `ini` format. It mainly includes the configuration items like ** rpc, p2p, group, secure and log **. 
 
 
 ```eval_rst
 .. important::
-    - 云主机的公网IP均为虚拟IP，若listen_ip填写外网IP，会绑定失败，须填写0.0.0.0
-    - RPC/P2P/Channel监听端口必须位于1024-65535范围内，且不能与机器上其他应用监听端口冲突
+    - The public IP addresses of the cloud host are virtual IP addresses. If listen_ip is filled in external network IP address, the binding fails. You must fill in 0.0.0.0.
+
+    - RPC/P2P/Channel listening port must be in the range of 1024-65535 and cannot conflict with other application listening ports on the machine.
+
 ```
 
-### 配置RPC
+### Configure RPC
 
-- `listen_ip`: 安全考虑，建链脚本默认监听127.0.0.1，如果需要外网访问RPC或外网使用SDK请监听**节点的外网IP**或`0.0.0.0`；
-- `channel_listen_port`: Channel端口，对应到[Web3SDK](../sdk/sdk.html#id2)配置中的`channel_listen_port`；
-- `jsonrpc_listen_port`: JSON-RPC端口。
+- `listen_ip`: For security reasons, the chain building script will listen to 127.0.0.1 by default. If you need to access the RPC or use SDK through external network, please listen to **external network IP address of node** or `0.0.0.0`;
+- `channel_listen_port`: Channel port, is corresponding to `channel_listen_port` in [Web3SDK](../sdk/sdk.html#id2) configuration;
+- `jsonrpc_listen_port`: JSON-RPC port.
 
-
-RPC配置示例如下：
+RPC configuration example is as follows:
 
 ```ini
 [rpc]
@@ -56,15 +61,15 @@ RPC配置示例如下：
     jsonrpc_listen_port=30302
 ```
 
-### 配置P2P
+### Configure P2P
 
-当前版本FISCO BCOS必须在`config.ini`配置中配置连接节点的`IP`和`Port`，P2P相关配置包括：
+The current version of FISCO BCOS must be configured with `IP` and `Port` of the connection node in the `config.ini` configuration. The P2P related configurations include:
 
-- `listen_ip`：P2P监听IP，默认设置为`0.0.0.0`。
-- `listen_port`：节点P2P监听端口。
-- `node.*`: 节点需连接的所有节点`IP:port`。
+-`listen_ip`: P2P listens for IP, to set `0.0.0.0` by default.
+-`listen_port`: Node P2P listening port.
+-`node.*`: All nodes `IP:port` which need to be connected to node.
 
-P2P配置示例如下：
+P2P configuration example is as follows:
 
 ```ini
 [p2p]
@@ -76,33 +81,33 @@ P2P配置示例如下：
     node.3=127.0.0.1:30312
 ```
 
-### 配置账本文件路径
+### Configure ledger file path
 
-`[group]`配置本节点所属的所有群组配置路径：
+`[group]`To configure all group configuration paths which this node belongs:
 
-- `group_data_path`: 群组数据存储路径。
-- `group_config_path`: 群组配置文件路径。
+- `group_data_path`: Group data storage path.
+- `group_config_path`: Group configuration file path.
 
-> 节点根据`group_config_path`路径下的所有`.genesis`后缀文件启动群组。
+> Node launches group according to all `.genesis` suffix files in the `group_config_path` path.
 
 ```ini
 [group]
-    ; 所有群组数据放置于节点的data子目录
+    ; All group data is placed in the node's data subdirectory
     group_data_path=data/
-    ; 程序自动加载该路径下的所有.genesis文件
+    ; Program automatically loads all .genesis files in the path
     group_config_path=conf/
 ```
 
 
-### 配置证书信息
+### Configure certificate information
 
-基于安全考虑，FISCO BCOS节点间采用SSL加密通信，`[secure]`配置SSL连接的证书信息：
+For security reasons, communication among FISCO BCOS nodes uses SSL encrypted communication.`[secure]` configure to SSL connection certificate information:
 
-- `data_path`：证书和私钥文件所在目录。
-- `key`: 节点私钥相对于`data_path`的路径。
-- `cert`: 证书`node.crt`相对于`data_path`的路径。
-- `ca_cert`: ca证书文件路径。
-- `ca_path`: ca证书文件夹，多ca时需要。
+- `data_path`：Directory where the certificate and private key file are located.
+- `key`: The `data_path` path that node private key relative to.
+- `cert`: The `data_path` path that certificate `node.crt` relative to.
+- `ca_cert`: ca certificate file path.
+- `ca_path`: ca certificate folder, required for multiple ca.
 
 ```ini
 [secure]
@@ -113,77 +118,78 @@ P2P配置示例如下：
     ca_path=
 ```
 
-### 配置黑名单列表
+### Configure blacklist
 
-基于防作恶考虑，FISCO BCOS允许节点配置不受信任的节点黑名单列表，拒绝与这些黑名单节点建立连接，通过`[crl]`配置：
+For preventing vice, FISCO BCOS allows nodes to configure untrusted node blacklist to reject establishing connections with these blacklist nodes. To configure blacklist through `[crl]`:
 
-> `crl.idx`: 黑名单节点的Node ID, 节点Node ID可通过`node.nodeid`文件获取; `idx`是黑名单节点的索引。
+> `crl.idx`: Blacklist node's Node ID, can get from `node.nodeid` file; `idx` is index of the blacklist node.
 
-黑名单的详细信息还可参考[CA黑名单](./certificate_blacklist.md)
+For details of the blacklist, refer to [CA Blacklist].(./certificate_blacklist.md)
 
-黑名单列表配置示例如下：
+Blacklist configuration example is as follows:
 
 ```ini
-; 证书黑名单
+; certificate blacklist
 [crl]
     crl.0=4d9752efbb1de1253d1d463a934d34230398e787b3112805728525ed5b9d2ba29e4ad92c6fcde5156ede8baa5aca372a209f94dc8f283c8a4fa63e
 3787c338a4
 ```
 
-### 配置日志信息
+### Configure log information
 
-FISCO BCOS支持轻量级的[easylogging++](https://github.com/zuhd-org/easyloggingpp)，也支持功能强大的[boostlog](https://www.boost.org/doc/libs/1_63_0/libs/log/doc/html/index.html)，可通过编译开关配置使用这两种日志，FISCO BCOS默认使用boostlog，详细可参考[日志操作手册](log_access.md)。
+FISCO BCOS supports light weight [easylogging++](https://github.com/zuhd-org/easyloggingpp) and powerful[boostlog](https://www.boost.org/doc/libs/1_63_0/libs/log/doc/html/index.html). It can use these two logs through compiling switch configuration, and it uses boostlog by default.  For details, refer to the [Log Operation Manual] (log_access.md).
 
-- `log_path`:日志文件路径。
-- `level`: 日志级别，当前主要包括`trace`、`debug`、`info`、`warning`、`error`五种日志级别，设置某种日志级别后，日志文件中会输大于等于该级别的日志，日志级别从大到小排序`error > warning > info > debug > trace`。
-- `max_log_file_size`：每个日志文件最大容量，**计量单位为字节，默认为200MB**。
-- `flush`：boostlog默认开启日志自动刷新，若需提升系统性能，建议将该值设置为false。
+- `log_path`:log file patch.
+- `level`: log level, currently includes 5 levels which are `trace`、`debug`、`info`、`warning`、`error`.After setting a certain log level, the log file will be entered with a log equal to or larger than this level.The log level is sorted from large to small by `error > warning > info > debug > trace`.
+- `max_log_file_size`：Maximum size per log file, ** unit of measure is bytes, default is 200MB**
+- `flush`：boostlog enables log auto-refresh by default. To improve system performance, it is recommended to set this value to false.
 
-boostlog示例配置如下：
+boostlog configuration example is as follows:
 
 ```ini
 [log]
     log_path=./log
     level=info
-    ; 每个日志文件最大容量，默认为200MB
+    ; Maximum size per log file, default is 200MB
     max_log_file_size=209715200
     flush=true
 ```
 
-#### 配置easylogging++
+#### Configure easylogging++
 
-为了尽量减少配置文件，FISCO BCOS将easyloggin++的配置信息都集中到了config.ini的`[log]`配置，一般建议不手动更改除了日志级别外的其他配置，开启easylogging++的方法可参考[启用easylogging++](log.html#easylogging)。
+In order to minimize the configuration file, FISCO BCOS concentrates the configuration information of easyloggin++ to `[log]` configuration of config.ini. In general, it is not recommended to manually change the configurations other than the log level. For launching easylogging++ method, refer to [Enable easylogging++](log.html#easylogging).
 
-- `format`：全局日志格式。
-- `log_flush_threshold`：日志刷新频率设置，即每`log_flush_threshold`行刷新日志到文件一次。
+- `format`：log format.
+- `log_flush_threshold`：log refresh frequency setting. Each `log_flush_threshold` line refreshes log to file once.
 
-easylogging++示例配置如下：
+easylogging++ configuration example is as follows:
 
 ```ini
 [log]
     log_path=./log
     level=info
     max_log_file_size=209715200
-    ; easylog 配置
+    ; easylog configuration
     format=%level|%datetime{%Y-%M-%d %H:%m:%s:%g}|%msg
     log_flush_threshold=100
 ```
 
-### 可选配置：落盘加密
+### Optional configuration: Disk encryption 
+In order to protect node data, FISCO BCOS introduces [Disk Encryption](../design/features/storage_security.md) to ensure confidentiality. **Disk Encryption** Operation Manual [Reference](./storage_security.md).
 
-为了保障节点数据机密性，FISCO BCOS引入[落盘加密](../design/features/storage_security.md)保障节点数据的机密性，**落盘加密**操作手册请[参考这里](./storage_security.md)。
+`data_secure` in `config.ini` is used to configure disk encryption. It mainly includes (for the operation of the disk encryption, please refer to [Operation Manual](./storage_security.md)):
 
-`config.ini`中的`data_secure`用于配置落盘加密，主要包括（落盘加密具体操作请参考[操作手册](./storage_security.md)）：
 
-- `enable`： 是否开启落盘加密，默认不开启；
+- `enable`：whether to launch disk encryption, not to launch by default;
 
-- `key_manager_ip`：[Key Manager](https://github.com/FISCO-BCOS/key-manager)服务的部署IP；
+- `key_manager_ip`：[Key Manager](https://github.com/FISCO-BCOS/key-manager)service's deployment IP;
 
-- `key_manager_port`：[Key Manager](https://github.com/FISCO-BCOS/key-manager)服务的监听端口；
+- `key_manager_port`：[Key Manager](https://github.com/FISCO-BCOS/key-manager)service's listening port；
 
-- `cipher_data_key`: 节点数据加密密钥的密文，`cipher_data_key`的产生参考[落盘加密操作手册](./storage_security.md)。
+- `cipher_data_key`: ciphertext of node data encryption key. For `cipher_data_key` generation,refer to [disk encryption operation manual](./storage_security.md).
 
-落盘加密节点配置示例如下：
+
+disk encrption configuration example is as follows:
 
 ```ini
 [data_secure]
@@ -193,52 +199,56 @@ key_manager_port=31443
 cipher_data_key=ed157f4588b86d61a2e1745efe71e6ea
 ```
 
-## 群组系统配置说明
+## Group system configuration instruction
 
-每个群组都有单独的配置文件，按照启动后是否可更改，可分为**群组系统配置**和**群组可变配置**。
-群组系统配置一般位于节点的`conf`目录下`.genesis`后缀配置文件中。
+Each group has unique separate configuration file, which can be divided into **group system configuration** and **group variable configuration** according to whether it can be changed after launch.
+group system configuration is generally located in the `.genesis` suffix configuration file in node's `conf` directory.
 
-如：`group1`的系统配置一般命名为`group.1.genesis`，群组系统配置主要包括**群组ID、共识、存储和gas**相关的配置。
+For example:`group1` system configuration generally names as `group.1.genesis`. Group system configuration mainly includes the related configuration of **group ID、consensus, storage and gas**.
 
 ```eval_rst
 .. important::
-    配置系统配置时，需注意：
+    When configuring the system configuration, you need to pay attention to:
+        
+    - **configuration group must be consistent**: group system configuration is used to generate the genesis block (block 0), so the configurations of all nodes in the group must be consistent.
+    
+    - **node cannot be modified after launching** ：system configuration has been written to the system table as genesis block, so it cannot be modified after chain initializes.
 
-    - **配置群组内一致** ：群组系统配置用于产生创世块(第0块)，因此必须保证群组内所有节点的该配置一致
-    - **节点启动后不可更改** ：系统配置已经作为创世块写入了系统表，链初始化后不可更改
-    - 链初始化后，即使更改了genesis配置，新的配置不会生效，系统仍然使用初始化链时的genesis配置
-    - 由于genesis配置要求群组内所有节点一致，建议使用 `build_chain <build_chain.html>`_ 生成该配置
+    - After chain is initialized, even if genesis configuration is modified, new configuration will not take effect, and system still uses the genesis configuration when initializing the chain.
+
+    - Since genesis configuration requires all nodes in the group to be consistent, it is recommended to use `build_chain <build_chain.html>`_ to generate the configuration.
 ```
 
-### 群组配置
+### Group configuration
 
-`[group]`配置**群组ID**，节点根据该ID初始化群组。
+`[group]`configurates **group ID**. Node initializes the group according to the group ID.
 
-群组2的群组配置示例如下：
+group2's configuration example is as follows:
 
 ```ini
 [group]
 id=2
 ```
 
-### 共识配置
+### Consensus configuration
 
-`[consensus]`涉及共识相关配置，包括：
+`[consensus]` involves consensus-related configuration, including:
 
-- `consensus_type`：共识算法类型，目前支持[PBFT](../design/consensus/pbft.md)和[Raft](../design/consensus/raft.md)，默认使用PBFT共识算法；
+- `consensus_type`：consensus algorithm type, currently supports [PBFT](../design/consensus/pbft.md) and [Raft](../design/consensus/raft.md). To use PBFT by default;
 
-- `max_trans_num`：一个区块可打包的最大交易数，默认是1000，链初始化后，可通过[控制台](./console.html#setsystemconfigbykey)动态调整该参数；
+- `max_trans_num`：a maximum number of transactions that can be packed in a block. The default is 1000. After the chain is initialized, the parameter can be dynamically adjusted through [Console](./console.html#setsystemconfigbykey);
 
-- `node.idx`：共识节点列表，配置了参与共识节点的[Node ID](../design/consensus/pbft.html#id1)，节点的Node ID可通过`${data_path}/node.nodeid`文件获取(其中`${data_path}`可通过主配置`config.ini`的`[secure].data_path`配置项获取)
+- `node.idx`：consensus node list, has configured with the [Node ID] of the participating consensus nodes. The Node ID can be obtained by the `${data_path}/node.nodeid` file (where `${data_path}` can be obtained by the configuration item `[secure].data_path` of the main configuration `config.ini`)
+
 
 ```ini
-; 共识协议配置
+; Consensus protocol configuration
 [consensus]
-    ; 共识算法，目前支持PBFT(consensus_type=pbft)和Raft(consensus_type=raft)
+    ;consensus algorithm, currently supports PBFT(consensus_type=pbft) and Raft(consensus_type=raft)
     consensus_type=pbft
-    ; 单个块最大交易数
+    ; maximum number of transactions in a block
     max_trans_num=1000
-    ; leader节点的ID列表
+    ; leader node's ID lists
     node.0=123d24a998b54b31f7602972b83d899b5176add03369395e53a5f60c303acb719ec0718ef1ed51feb7e9cf4836f266553df44a1cae5651bc6ddf50
 e01789233a
     node.1=70ee8e4bf85eccda9529a8daf5689410ff771ec72fc4322c431d67689efbd6fbd474cb7dc7435f63fa592b98f22b13b2ad3fb416d136878369eb41
@@ -249,18 +259,17 @@ e01789233a
 4a5aed2b4a
 ```
 
-### 存储模块配置
+### Storage module configuration
 
-存储主要包括[state](../design/storage/mpt.html)和[AMDB](../design/storage/storage.html)，`state`涉及交易状态存储，AMDB存储涉及系统表，分别在`[storage]`和`[state]`中配置：
+Storage mainly includes [state](../design/storage/mpt.html) and [AMDB](../design/storage/storage.html). `state` involves transaction state storage. `AMDB` storage involves system tables. They are configured in `[storage]` and `[state]` respectively:
 
-- `[storage].type`：存储的DB类型，目前仅支持LevelDB，后续会支持Mysql；
+- `[storage].type`：storage's DB type, currently supports LevelDB only, and it will support Mysql in the future;
 
-- `[state].type`：state类型，目前支持[storage state](../design/storage/storage.html#id6)和[MPT state](../design/storage/mpt.html)，**默认为storage state**，storage state将交易执行结果存储在系统表中，效率较高，MPT state将交易执行结果存储在MPT树中，效率较低，但包含完整的历史信息。
-
+- `[state].type`：state type, currently supports [storage state](../design/storage/storage.html#id6) and [MPT state](../design/storage/mpt.html), **storage state by default**. Storage state storing transaction execution result in the system table is more efficient. MPT state storing the transaction execution result in the MPT tree is inefficient, but it contains complete historical information.
 
 ```eval_rst
 .. important::
-   推荐使用 **storage state** ，除有特殊需求，不建议使用MPT State
+    **storage state** is recommended. MPT State is not recommended except for special requirements.
 
 ```
 
@@ -272,9 +281,17 @@ e01789233a
     type=storage
 ```
 
-### gas配置
+### gas configuration
 
-FISCO BCOS兼容以太坊虚拟机([EVM](../design/virtual_machine/evm.md))，为了防止针对[EVM](../design/virtual_machine/evm.md)的DOS攻击，EVM在执行交易时，引入了gas概念，用来度量智能合约执行过程中消耗的计算和存储资源，包括交易最大gas限制和区块最大gas限制，若交易或区块执行消耗的gas超过限制(gas limit)，则丢弃交易或区块。FISCO BCOS是联盟链，简化了gas设计，**仅保留交易最大gas限制，区块最大gas通过[共识配置的max_trans_num](./configs.html#id8)和交易最大gas限制一起约束**。FISCO BCOS通过genesis的`[tx].gas_limit`来配置交易最大gas限制，默认是300000000，链初始化完毕后，可通过[控制台指令](./console.html#setsystemconfigbykey)动态调整gas限制。
+
+FISCO BCOS is compatible with Ethereum virtual machine ([EVM](../design/virtual_machine/evm.md)). In order to prevent DOS from attacking [EVM](../design/virtual_machine/evm.md), EVM introduces the concept of gas when executing transactions, which is used to measure the computing and storage resources consumed during the execution of smart contracts. The meausre includes the maximum gas limit of transaction and block. If the gas consumed by the transaction or block execution exceeds the gas limit, the transaction or block is discarded.
+
+
+FISCO BCOS is alliance chain that simplifies gas design. **It retains only maximum gas limit of transaction, and maximum gas of block is constrained together by [consensus configuration max_trans_num](./configs.html#id8) and transaction maximum gas limit.**
+
+FISCO BCOS configures maximum gas limit of the transaction through geneis `[tx].gas_limit`. The default value is 300000000. After chain is initialized, the gas limit can be dynamically adjusted through the [console command](./console.html#setsystemconfigbykey).
+
+
 
 ```ini
 [tx]
@@ -282,28 +299,30 @@ FISCO BCOS兼容以太坊虚拟机([EVM](../design/virtual_machine/evm.md))，�
 ```
 
 
-## 账本可变配置说明
+## Ledger variable configuration instruction
 
-账本可变配置位于节点`conf`目录下`.ini`后缀的文件中。
+Variable configuration of the ledger is located in the file of the `.ini` suffix in the node `conf` directory.
 
-如：`group1`可变配置一般命名为`group.1.ini`，可变配置主要包括交易池大小、共识消息转发的TTL。
+For example: `group1` variable configuration is generally named `group.1.ini`. The variable configuration mainly includes the transaction pool size and the TTL of the consensus message forwarding.
 
-### 交易池配置
 
-FISCO BCOS将交易池容量配置开放给用户，用户可根据自己的业务规模需求、稳定性需求以及节点的硬件配置动态调整交易池大小。
+### Transaction pool configuration
 
-交易池配置示例如下：
+FISCO BCOS opens the transaction pool capacity configuration to users. Users can dynamically adjust the transaction pool size according to their business size requirements, stability requirements, and node hardware configuration.
+
+Transaction pool configuration example is as follows:
 
 ```ini
 [tx_pool]
     limit=10000
 ```
 
-### PBFT共识消息广播配置
+### PBFT consensus message broadcast configuration
 
-PBFT共识算法为了保证共识过程最大网络容错性，每个共识节点收到有效的共识消息后，会向其他节点广播该消息，在网络较好的环境下，共识消息转发机制会造成额外的网络带宽浪费，因此在群组可变配置项中引入了`TTL`来控制消息最大转发次数，消息最大转发次数为`TTL-1`，**该配置项仅对PBFT有效**。
+In order to ensure the maximum network fault tolerance of the consensus process, each consensus node broadcasts the message to other nodes after receiving a valid consensus message. In smooth network environment, the consensus message forwarding mechanism will waste additional network bandwidth, so the `TTL` is introduced in the group variable configuration item to control the maximum number of message forwarding. The maximum number of message forwarding is `TTL-1`, and **the configuration item is valid only for PBFT**.
 
-设置共识消息最多转发一次，配置示例如下：
+
+Setting consensus message to be forwarded at most once configuration example is as follows:
 
 ```ini
 ; the ttl for broadcasting pbft message
@@ -311,42 +330,47 @@ PBFT共识算法为了保证共识过程最大网络容错性，每个共识节�
 ttl=2
 ```
 
-## 动态配置系统参数
+## Dynamically configure system parameters
 
-FISCO BCOS系统目前主要包括如下系统参数(未来会扩展其他系统参数)：
+FISCO BCOS system currently includes the following system parameters (other system parameters will be extended in the future):
 
 
 ```eval_rst
 +-----------------+-----------+---------------------------------+
-| 系统参数        | 默认值    |             含义                |
+| system parameters        | default value    |             definition                |
 +=================+===========+=================================+
-| tx_count_limit  | 1000      | 一个区块中可打包的最大交易数目  |
+| tx_count_limit  | 1000      | maximum number of transactions that can be packaged in one block
+  |
 +-----------------+-----------+---------------------------------+
-| tx_gas_limit    | 300000000 | 一个区块最大gas限制             |
+| tx_gas_limit    | 300000000 | Maximum block limit for a block            |
 +-----------------+-----------+---------------------------------+
 
 ```
 
-控制台提供 **[setSystemConfigByKey](./console.html#setsystemconfigbykey)** 命令来修改这些系统参数，**[getSystemConfigByKey](./console.html#getsystemconfigbykey)** 命令可查看系统参数的当前值：
+Console provides **[setSystemConfigByKey](./console.html#setsystemconfigbykey)** command to modify these system parameters.
+**[getSystemConfigByKey](./console.html#getsystemconfigbykey)** command can view the current value of the system parameter:
 
 
 ```eval_rst
 .. important::
 
-    不建议随意修改tx_count_limit和tx_gas_limit，如下情况可修改这些参数：
+    It is not recommended to modify tx_count_limit and tx_gas_limit arbitrarily. These parameters can be modified as follows:
 
-    - 机器网络或CPU等硬件性能有限：调小tx_count_limit，或降低业务压力；
-    - 业务逻辑太复杂，执行区块时gas不足：调大tx_gas_limit。
+    - Hardware performance such as machine network or CPU is limited: to reduce tx_count_limit for reducing business pressure;
+
+    - gas is insufficient when executing blocks for comlicated business logic: increase tx_gas_limit.
+
 ```
 
 ```bash
-# 设置一个区块可打包最大交易数为500
+# To set the maximum number of transactions of a packaged block to 500
+
 > setSystemConfigByKey tx_count_limit 500
-# 查询tx_count_limit
+# inquiry tx_count_limit
 > getSystemConfigByKey tx_count_limit
 [500]
 
-# 设置区块gas限制为400000000
+# To set block gas limit as  400000000
 > getSystemConfigByKey tx_gas_limit 400000000
 > getSystemConfigByKey
 [400000000]
