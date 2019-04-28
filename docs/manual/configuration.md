@@ -281,7 +281,7 @@ Storage mainly includes [state](../design/storage/mpt.html) and [AMDB](../design
     type=storage
 ```
 
-### gas configuration
+### Gas configuration
 
 
 FISCO BCOS is compatible with Ethereum virtual machine ([EVM](../design/virtual_machine/evm.md)). In order to prevent DOS from attacking [EVM](../design/virtual_machine/evm.md), EVM introduces the concept of gas when executing transactions, which is used to measure the computing and storage resources consumed during the execution of smart contracts. The meausre includes the maximum gas limit of transaction and block. If the gas consumed by the transaction or block execution exceeds the gas limit, the transaction or block is discarded.
