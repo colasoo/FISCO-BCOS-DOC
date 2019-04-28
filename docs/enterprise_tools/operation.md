@@ -68,7 +68,7 @@ In the above example, user will generates a node configuration file folder named
     The generation of node configuration file folder needs the node certificate only. In the above example, the certificate will be cert_127.0.0.1_30300.crt和cert_127.0.0.1_30301.crt
 ```
 
-## Command in detail
+## Command description
 
 FISCO BCOS generator provides multiple functions of node generation, expansion, group division and certificate. Here is a brief introduction:
 
@@ -261,97 +261,97 @@ node.4 = 192.167.1.1:30300
 node.5 = 192.167.1.1:30301
 ```
 
-User Case
+For example:
 
 ```bash
 $ ./generator --merge_config ~/mydata/node_A/config.ini  ~/mydata/node_B/config.ini
 ```
 
-使用成功后会将node_A和node_B的config.ini中p2p section合并与 ~/mydata/node_B/config.ini的文件中
+When it works, the p2p sections in config.ini of node_A and node_B will be merged to ~/mydata/node_B/config.ini
 
 ### deploy_private_key (-d)
 
-使用--deploy_private_key可以将路径下名称相同的节点私钥导入到生成好的配置文件夹中。
+--deploy_private_key command will import the private key of nodes with same name to the generated configuration file folder
 
-使用示例:
+For example:
 
 ```bash
 $./generator --deploy_private_key ./cert ./data
 ```
 
-如./cert下有名为node_127.0.0.1_30300，node_127.0.0.1_30301的文件夹，文件夹中有节点私钥文件node.key
+If ./cert contains file folders named node_127.0.0.1_30300 and node_127.0.0.1_30301, which are placed with node private key node.key,
 
-./data下有名为node_127.0.0.1_30300，node_127.0.0.1_30301的配置文件夹
+./data contains file folders named node_127.0.0.1_30300 and node_127.0.0.1_30301,
 
-执行完成后可以将./cert下的对应的节点私钥导入./data的配置文件夹中
+then this command would import private key under./cert to ./data folder
 
 ### add_peers (-p)
 
-使用--add_peers可以指定的peers文件导入到生成好的节点配置文件夹中。
+--add_peers command can import the files of assigned peers to the generated node configuration file folder.
 
-使用示例:
+For example:
 
 ```bash
 $./generator --add_peers ./meta/peers.txt ./data
 ```
 
-./data下有名为node_127.0.0.1_30300，node_127.0.0.1_30301的配置文件夹
+If ./data contains configuration file folder named node_127.0.0.1_30300 and node_127.0.0.1_30301,
 
-执行完成后可以将peers文件中的连接信息导入./data下所有节点的配置文件`config.ini`中
+then this command will import peers file with connection information  to the node configuration files `config.ini` under ./data.
 
 ### add_group (-a)
 
-使用--add_group可以指定的peers文件导入到生成好的节点配置文件夹中。
+--add_group command will import assigned peers file to the generated node configuration file folder.
 
-使用示例:
+For example:
 
 ```bash
 $./generator --add_group ./meta/group.2.genesis ./data
 ```
 
-./data下有名为node_127.0.0.1_30300，node_127.0.0.1_30301的配置文件夹
+If ./data contains configuration file folder named node_127.0.0.1_30300 and node_127.0.0.1_30301,
 
-执行完成后可以将群组2的连接信息导入./data下所有节点的`conf`文件夹中
+then this command will import connection information of Group 2 to `conf` folder of all nodes under ./data.
 
 ### download_fisco
 
-使用--download_fisco可以指定的目录下下载`fisco-bcos`二进制文件。
+--download_fisco can download `fisco-bcos` binary file under assigned section.
 
-使用示例:
+For example:
 
 ```bash
 $./generator --download_fisco ./meta
 ```
 
-执行完成后会在./meta文件夹下下载`fisco-bcos`可执行二进制文件
+This command can download `fisco-bcos` executable binary file under ./meta folder.
 
 ### download_console
 
-使用--download_console可以指定的目录下下载并配置控制台。
+--download_consolecan download and control console under assigned section.
 
-使用示例:
+For example:
 
 ```bash
 $./generator --download_console ./meta
 ```
 
-执行完成后会在./meta文件夹下根据`node_deployment.ini`完成对控制台的配置
+This command will configure the console under ./meta folder according to `node_deployment.ini`.
 
 ### get_sdk_file
 
-使用--get_sdk_file可以指定的目录下下获取控制台和sdk配置所需要的`node.crt`、`node.key`、`ca.crt`及`applicationContext.xml`。
+--get_sdk_file command can aquire `node.crt`, `node.key`, `ca.crt` and `applicationContext.xml` that are needed in configuration of console and sdk under assigned section. 
 
-使用示例:
+For example:
 
 ```bash
 $./generator --get_sdk_file ./sdk
 ```
 
-执行完成后会在./sdk文件夹下根据`node_deployment.ini`生成上述配置文件
+This command will generate the above configuration file according to `node_deployment.ini` under ./sdk
 
 ### version (-v)
 
-使用--version命令查看当前部署工具的版本号。
+--version command can help view the version code of current deployment tool.
 
 ```bash
 $ ./generator --version
@@ -359,9 +359,9 @@ $ ./generator --version
 
 ### help (-h)
 
-用户可以使用-h或--help命令查看帮助菜单
+User can use -h or --help command to check help list
 
-使用示例：
+For example:
 
 ```bash
 $ ./generator -h
@@ -375,19 +375,19 @@ usage: generator [-h] [-v] [-b peer_path data_dir] [-c data_dir]
                  [-a group genesis config.ini]
 ```
 
-## 国密操作相关
+## Operation in OSCCA standard (China)
 
-FISCO BCOS generator的所有命令同时支持国密版`fisco-bcos`，使用时，国密证书、私钥均加以前缀`gm`。基本使用解释如下
+All the commands in FISCO BCOS generator are adaptable for commercial version of `fisco-bcos` (oscca-approved encryption). When using this version, every certificates and private key should be prefixed with `gm`. The description reads below:
 
-### 国密开关 (-g)
+### On-off switch (-g command)
 
-国密开关-g打开时，生成证书、节点、群组创世区块的操作会相应生成国密版的上述文件。
+Once -g command is executed, all the operations concerning certificates, nodes and group Genesis Block will generate the above files of OSCCA standard.
 
-### 生成证书操作
+### generate certificate
 
-如generate_*_certificate操作时，配合-g命令会生成相应的国密证书。
+When executing generate_*_certificate together with -g command, the generated certificate will be in OSCCA standard.
 
-操作示例：
+For example:
 
 ```
 $ ./generator --generate_all_certificates ./cert -g
@@ -395,14 +395,14 @@ $ ./generator --generate_all_certificates ./cert -g
 
 ```eval_rst
 .. note::
-    上述命令会根据meta目录下存放的gmca.crt、机构证书gmagency.crt和机构私钥gmagency.key生成相应的节点证书。
+    the above command will generate node certificate according to gmca.crt, agency certificate gmagency.crt and agency private key gmagency.key placed under meta folder.
 
-    - 如果用户缺少上述三个文件，则无法生成节点证书，程序会抛出异常。
+    - Absence of any one of the three files will fail the generation of node certificate, and the program will throw an exception.
 ```
 
-### 生成国密群组创世区块
+### generate group Genesis Block in OSCCA standard
 
-操作示例
+For example:
 
 ```bash
 $ cp node0/gmnode.crt ./meta/gmcert_127.0.0.1_3030n.crt
@@ -411,39 +411,39 @@ $ vim ./conf/group_genesis.ini
 $ ./generator --create_group_genesis ~/mydata -g
 ```
 
-程序执行完成后，会在~/mydata文件夹下生成mgroup.ini中配置的`group.i.genesis`
+After executing this program, user can locate `group.i.genesis` in mgroup.ini under ~/mydata folder.
 
-用户生成的`group.i.genesis`即为群组的创世区块，即可完成新群组划分操作。
+`group.i.genesis` is the Genesis Block of the new group.
 
-### 生成国密节点配置文件夹
+### generate node configuration file folder in OSCCA standard
 
-操作示例
+For example:
 
 ```bash
 $ vim ./conf/node_deployment.ini
 $ ./generator --build_install_package ./peers.txt ~/mydata -g
 ```
 
-程序执行完成后，会在~/mydata文件夹下生成多个名为node_hostip_port的文件夹，推送到对应服务器后即可启动节点
+After executing program, multiple folders named node_hostip_port will be generated under ~/mydata folder and pushed to the relative server to activate node.
 
-## 监控设计
+## Monitoring design
 
-FISCO BCOS generator 生成的节点配置文件夹中提供了内置的监控脚本，用户可以通过对其进行配置，将节点的告警信息发送至指定地址。FISCO BCOS generator会将monitor脚本放置于生成节点配置文件的指定目录下，假设用户指定生成的文件夹名为data，则monitor脚本会在data目录下的monitor文件夹下
+FISCO BCOS generator has preset monitoring script in all generated node configuration folders. Warning information of node will be sent to  IP address assigned by user after configuration. FISCO BCOS generator places the monitoring script under the assigned section for node configuration files. If user assigns the folder named "data", then user can locate it under monitor folder of data section.
 
-使用方式如下：
+For example:
 
 ```
 $ cd ./data/monitor
 ```
 
-用途如下：
+Purpose of use:
 
-1. 监控节点是否存活, 并且可以重新启动挂掉的节点.
-2. 获取节点的块高和view信息, 判断节点共识是否正常.
-3. 分析最近一分钟的节点日志打印, 收集日志关键错误打印信息, 准实时判断节点的状态.
-4. 指定日志文件或者指定时间段, 分析节点的共识消息处理, 出块, 交易数量等信息, 判断节点的健康度. 
+1. to monitor status of node, to reactive node
+2. to aquire block number of node and view information, to ensure the consensus of nodes
+3. to analyze printing of node logs in last 1 minutes, to collect critical errors information of printed logs, to monitor status of node in real time
+4. to assign log file or time period, to analyze information of consensus message management, block generation and transaction volume and node's health. 
 
-### 配置告警服务
+### Configuration warning service
 
 用户使用前，首先需要配置告警信息服务，这里以[server酱](http://sc.ftqq.com/3.version)的微信推送为例，可以参考配置[server酱](http://sc.ftqq.com/3.version)
 
