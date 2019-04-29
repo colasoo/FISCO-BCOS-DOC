@@ -1,8 +1,8 @@
 ##############################################################
-系统设计
+System design
 ##############################################################
 
-本章介绍FISCO BCOS平台的设计思路，包括每个模块的结构以及实现，面向FISCO BCOS平台开发者。
+This chapter introduces to the developers on FISCO BCOS the design concept of the platform, including structure and implementation of every model.
 
 .. toctree::
    :maxdepth: 2
