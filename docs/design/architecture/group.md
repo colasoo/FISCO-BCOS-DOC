@@ -1,12 +1,12 @@
-# 群组架构
+# Group structure
 
-考虑到真实的业务场景需求，FISCO BCOS引入多群组架构，支持区块链节点启动多个群组，群组间交易处理、数据存储、区块共识相互隔离，保障区块链系统隐私性的同时，降低了系统的运维复杂度。
+Considering needs in most business scenarios, FISCO BCOS adapts multi-group structure for nodes to form groups and 考虑到真实的业务场景需求，FISCO BCOS引入多群组架构，支持区块链节点启动多个群组，群组间交易处理、数据存储、区块共识相互隔离，保障区块链系统隐私性的同时，降低了系统的运维复杂度。
 
 
 ```eval_rst
 .. note::
 
-    举个例子:
+    For example:
 
     机构A、B、C所有节点构成一个区块链网络，运行业务1；一段时间后，机构A、B启动业务2，且不希望该业务相关数据、交易处理被机构C感知，有何解？
 
