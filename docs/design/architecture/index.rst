@@ -2,24 +2,24 @@
 Overall network
 ##############################################################
 
-The overall network of FISCO BCOS can be categorized into three layers: fundamental, core and access.
+The overall network of FISCO BCOS can be categorized into four layers: fundamental, core, administration and access.
 
-- **fundamental layer**:提供区块链的基础数据结构和算法库
+- **fundamental**: provide basic data structure and algorithms library
 
-- **core layer**: 实现了区块链的核心逻辑，核心层分为两大部分：
+- **core**: implement the core logic of blockchain. It can be further divided into 2 part:
 
-  (1) 链核心层: 实现区块链的链式数据结构、交易执行引擎和存储驱动
+  (1) Chain core: realize the chain data structure, transaction execution engine and storage driving of Blockchain
 
-  (2) 互联核心层: 实现区块链的基础P2P网络通信、共识机制和区块同步机制
+  (2) Internetworking core: realize the basic P2P networking, consensus mechanism and syncing mechanism of blockchain
 
-- **管理层**: 实现区块链的管理功能，包括参数配置、账本管理和AMOP
+- **administration**: realize the administration of blockchain, including parameter setting, ledger management and AMOP
 
-- **接口层**: 面向区块链用户，提供多种协议的RPC接口、SDK和交互式控制台
+- **access**: access for blockchain users including RPC interface of multiple protocols, SDK and interactive console.
 
 
-FISCO BCOS基于多群组架构实现了强扩展性的群组多账本，基于清晰的模块设计，构建了稳定、健壮的区块系统。
+FISCO BCOS realizes strong scalability with multi-group structure and builds up a strong and stable blockchain system based on reasonable model design.
 
-本章重点介绍FISCO BCOS的群组架构和系统运行时的交易流(包括交易提交、打包、执行和上链)。
+This chapter emphasizes the group structure and transaction flow (submission, package, execution and write-on-chain of transaction) of FISCO BCOS.
 
 
 .. image:: ../../../images/architecture/architecture.png
