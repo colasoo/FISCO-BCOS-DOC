@@ -1,5 +1,5 @@
 ##############################################################
-System design
+System Design
 ##############################################################
 
 This chapter introduces to the developers on FISCO BCOS the design concept of the platform, including structure and implementation of every model.
