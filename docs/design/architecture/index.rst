@@ -17,7 +17,7 @@ The overall network of FISCO BCOS can be categorized into four layers: fundament
 - **access**: access for blockchain users including RPC interface of multiple protocols, SDK and interactive console.
 
 
-FISCO BCOS realizes strong scalability with multi-group structure and builds up a strong and stable blockchain system based on reasonable model design.
+FISCO BCOS boasts strong scalability due to multi-group structure and a strong and stable blockchain system based on reasonable model design.
 
 This chapter emphasizes the group structure and transaction flow (submission, package, execution and write-on-chain of transaction) of FISCO BCOS.
 
