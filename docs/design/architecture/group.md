@@ -1,6 +1,6 @@
 # Group structure
 
-Considering needs in most business scenarios, FISCO BCOS adapts multi-group structure for nodes to form groups and 考虑到真实的业务场景需求，FISCO BCOS引入多群组架构，支持区块链节点启动多个群组，群组间交易处理、数据存储、区块共识相互隔离，保障区块链系统隐私性的同时，降低了系统的运维复杂度。
+To fit most business scenarios, FISCO BCOS supports various functions including multi-group activation, transactions among groups, data storage and block consensus in separation engined by multi-group structure. It can safely guard the system privacy but also eliminate the difficulty in operation and maintainence of blockchain system.
 
 
 ```eval_rst
@@ -8,32 +8,32 @@ Considering needs in most business scenarios, FISCO BCOS adapts multi-group stru
 
     For example:
 
-    机构A、B、C所有节点构成一个区块链网络，运行业务1；一段时间后，机构A、B启动业务2，且不希望该业务相关数据、交易处理被机构C感知，有何解？
+    Agency A, B, C, D consituted a blockchain network to operate Project 1. But now, A and B want to start Project 2 in the condition that C has no access to its data and transactions. How to realize it?
 
-    - **1.3系列FISCO BCOS系统** ：机构A和机构B重新搭一条链运行业务2；运维管理员需要运维两条链，维护两套端口
+    - **1.3 series FISCO BCOS** : Agency A and B build another chain to operate Project 2. Administrator needs to operate and maintain both chains and their ports.
 
-    - **FISCO BCOS 2.0** ：机构A和机构B新建一个群组运行业务2；运维管理员仅需维护一条链
+    - **FISCO BCOS 2.0** ：Agency A and B bulid another group for Project 2. Administrator maintains only one chain.
 
-    显然在达到相同隐私保护需求基础上，FISCO BCOS 2.0具有更好的扩展性、可运维性和灵活性。
+    Obviously both solutions can achieve privacy protection, but FISCO BCOS 2.0 gets advantages in scalability, operation and maintainence and flexibility.
 ```
 
-多群组架构中，群组间共享网络，通过[网络准入和账本白名单](../security_control/node_management.md)实现各账本间网络消息隔离。
+In multi-group structure, Networking is shared among groups. Groups can isolate messages of some ledger through [networking access and whitelist] (../security_control/node_management.md).
 
 ![](../../../images/architecture/ledger.png)
 
 
-群组间数据隔离，每个群组独立运行各自的共识算法，不同群组可使用不同的共识算法。每个账本模块自底向上主要包括核心层、接口层和调度层三层，这三层相互协作，FISCO BCOS可保证单个群组独立健壮地运行。
+Then, data will be isolated with other groups. Every group runs consensus algorithm indepently or differently. Each ledger model contains three layers: Core, Access, Administration (from the bottom to the top). This three layers will cooperate to ensure stable operation of each group in FISCO BCOS platform.
 
-## 核心层
+## Core
 
-核心层负责将群组的[区块](../../tutorial/key_concepts.html#id3)数据、区块信息、系统表以及区块执行结果写入底层数据库。
+Core layer is responsible for inputing group data [block](../../tutorial/key_concepts.html#id3), block information, system table and execution result into data base.
 
-存储分为世界状态(State)和分布式存储(AMDB)两部分，世界状态包括MPTState和StorageState，负责存储交易执行的状态信息，StorageState性能高于MPTState，但不存储区块历史信息；AMDB则向外暴露简单的查询(select)、提交(commit)和更新(update)接口，负责操作合约表、系统表和用户表，具有可插拔特性，后端可支持多种数据库类型，目前仅支持[LevelDB数据库](https://github.com/google/leveldb)，后期会把基于mysql的[AMDB](../storage/storage.md)集成到系统中。
+Storage is formed by two parts: State and AMDB. State contains MPTState and StorageState. It stores the status information of transations but not the history records of block and has higher performance than MPTState.   ，但不存储区块历史信息；AMDB则向外暴露简单的查询(select)、提交(commit)和更新(update)接口，负责操作合约表、系统表和用户表，具有可插拔特性，后端可支持多种数据库类型，目前仅支持[LevelDB数据库](https://github.com/google/leveldb)，后期会把基于mysql的[AMDB](../storage/storage.md)集成到系统中。
 
 ![](../../../images/architecture/storage.png)
 
 
-## 接口层
+## Access
 
 接口层包括交易池(TxPool)、区块链(BlockChain)和区块执行器(BlockVerifier)三个模块。
 
@@ -44,7 +44,7 @@ Considering needs in most business scenarios, FISCO BCOS adapts multi-group stru
 - **区块执行器(BlockVerifier)**: 与调度层交互，负责执行从调度层传入的区块，并将区块执行结果返回给调度层。
 
 
-## 调度层
+## Administration
 
 调度层包括共识模块(Consensus)和同步模块(Sync)。
 
