@@ -1,4 +1,4 @@
-# Group structure
+# Multi-group structure
 
 To fit most business scenarios, FISCO BCOS supports various functions including multi-group activation, transactions among groups, data storage and block consensus in separation engined by multi-group structure. It can safely guard the system privacy but also eliminate the difficulty in operation and maintainence of blockchain system.
 
@@ -37,18 +37,18 @@ Storage is formed by two parts: State and AMDB. State contains MPTState and Stor
 
 Access layer includes three models: TxPool, BlockChain and BlockVerifier.
 
-- **TxPool**: interact with networking and administration layers. 与网络层以及调度层交互，负责缓存客户端或者其他节点广播的交易，调度层(主要是同步和共识模块)从交易池中取出交易进行广播或者区块打包；
+- **TxPool**: interact with networking and administration layers. Store the transactions propagated by client ends or other nodes. Administration layer (mainly syncing and consensus models) outputs transactions in TxPool for propagation and block packing.
 
-- **BlockChain**: 与核心层和调度层交互，是调度层访问底层存储的唯一入口，调度层(同步、共识模块)可通过区块链接口查询块高、获取指定区块、提交区块；
+- **BlockChain**: interact with core layer and administration layer. The only access to bottom storage. Administration layer (syncing and consensus models) can check block number, acquire block and submit block through Blockchain.
 
-- **BlockVerifier**: 与调度层交互，负责执行从调度层传入的区块，并将区块执行结果返回给调度层。
+- **BlockVerifier**: interact with administration layer, execute the block inputed by administration layer and sends result back to administration layer.
 
 
 ## Administration
 
-调度层包括共识模块(Consensus)和同步模块(Sync)。
+Administration layer includes two models: Consensus and Sync.
 
-- **共识模块**：包括Sealer线程和Engine线程，分别负责打包交易、执行共识流程。Sealer线程从交易池(TxPool)取交易，并打包成新区块；Engine线程执行共识流程，共识过程会执行区块，共识成功后，将区块以及区块执行结果提交到区块链(BlockChain)，区块链统一将这些信息写入底层存储，并触发交易池删除上链区块中包含的所有交易、将交易执行结果以回调的形式通知客户端，目前FISCO BCOS主要支持[PBFT](../consensus/pbft.md)和[Raft](../storage/storage.md)共识算法；
+- **Consensus**: include two threads that are Sealer and Engine, one for packing transactions and another for executing consensus workflow. Sealer outputs transactions from TxPool and packs into new blocks. Engine executes consensus workflow, during which block is also executed, and submits execution result to Blockchain. Blockchain will input the information to bottom storage and trigger TxPool to delete all transactions in the on-chain block. and notifies transaction result to client ends using callbacks. Currently FISCO BCOS mainly supports consensus algorithm [PBFT](../consensus/pbft.md)和[Raft](../storage/storage.md).
 
-- **同步模块**：负责广播交易和获取最新区块，
-考虑到共识过程中，[leader](../consensus/pbft.html#id1)负责打包区块，而leader随时有可能切换，因此必须保证客户端的交易尽可能发送到每个区块链节点，节点收到新交易后，同步模块将这些新交易广播给所有其他节点；考虑到区块链网络中机器性能不一致或者新节点加入都会导致部分节点区块高度落后于其他节点，同步模块提供了区块同步功能，该模块向其他节点发送自己节点的最新块高，其他节点发现块高落后于其他节点后，会主动下载最新区块。
+- **Sync**: propagate transactions and acquire new block.
+During consensus workflow, [leader](../consensus/pbft.html#id1) is responsible for block packing and leader may be switched at any time. Therefore, it is necessary to ensure that the transactions in client ends will reach every node on chain, whose sync model will propagate the new transaction to the other nodes. Considering the inconsistency of machines' performance on Blockchain, or increment of node may causing lagging of block number, Sync model offers block syncing function. Sync model sends the latest block number to other nodes so that they can download the newest block when finding the block number is lagging behind others.
