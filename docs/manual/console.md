@@ -1,64 +1,71 @@
-# 控制台
+# Console
 
-[控制台](https://github.com/FISCO-BCOS/console)是FISCO BCOS 2.0重要的交互式客户端工具，它通过[Web3SDK](../sdk/sdk.md)与区块链节点建立连接，实现对区块链节点数据的读写访问请求。控制台拥有丰富的命令，包括查询区块链状态、管理区块链节点、部署并调用合约等。此外，控制台提供一个合约编译工具，用户可以方便快捷的将Solidity合约文件编译为Java合约文件。
+[Console](https://github.com/FISCO-BCOS/console) is an important interactive client tool of FISCO BCOS 2.0. It establishes a connection with blockchain node through Web3SDK[Web3SDK](../sdk/sdk.md) to request read and write access for blockchain node data. Console has a wealth of commands, including blockchain status inquiry, blockchain nodes management, contracts deployment and calling. In addition, console provides a contract compilation tool that allows users to easily and quickly compile Solidity contract files into Java contract files.
 
-### 控制台命令
-控制台命令由两部分组成，即指令和指令相关的参数：   
-- **指令**: 指令是执行的操作命令，包括查询区块链相关信息，部署合约和调用合约的指令等，其中部分指令调用JSON-RPC接口，因此与JSON-RPC接口同名。
-**使用提示： 指令可以使用tab键补全，并且支持按上下键显示历史输入指令。**
-    
-- **指令相关的参数**: 指令调用接口需要的参数，指令与参数以及参数与参数之间均用空格分隔，与JSON-RPC接口同名命令的输入参数和获取信息字段的详细解释参考[JSON-RPC API](../api.md)。
 
-常用命令链接：
-- 查看区块高度：[getBlockNumber](./console.html#getblocknumber)
-- 查看共识节点列表：[getSealerList](./console.html#getsealerlist)
-- 部署合约: [deploy](./console.html#deploy)
-- 调用合约: [call](./console.html#call)
-- 切换群组: [switch](./console.html#switch)
+### Console command
 
-### 控制台响应
-当发起一个控制台命令时，控制台会获取命令执行的结果，并且在终端展示执行结果，执行结果分为2类：
-- **正确结果:** 命令返回正确的执行结果，以字符串或是json的形式返回。       
-- **错误结果:** 命令返回错误的执行结果，以字符串或是json的形式返回。 
-  - 控制台的命令调用JSON-RPC接口时，错误码[参考这里](../design/rpc.html#id6)。
-  - 控制台的命令调用Precompiled Service接口时，错误码[参考这里](../sdk/sdk.html#precompiled-service-api)。
+Console command consists of two parts, the instructions and the parameters related to the instruction:
+- **instruction**: instruction is an executed operation command, including blockchain status inquiry and contracts deployment and calling. And some of the instructions call the JSON-RPC interface, so they have same name as the JSON-RPC interface.
+**Use suggestions: instructions can be completed using the tab key, and support for displaying historical input commands by pressing the up and down keys.**
 
-## 控制台配置与运行
+- **parameters related to the instruction**: parameters required by instruction call interface. Instructions to parameters and parameters to parameters are separated by spaces. The paramenters name same as JSON-RPC interface and the explanation of getting information field can be refered to [JSON-RPC API](../api.md).
+
+
+Common command link:
+- to view block height: [getBlockNumber](./console.html#getblocknumber)
+- to view consensus node list: [getSealerList](./console.html#getsealerlist)
+- to deploy contract: [deploy](./console.html#deploy)
+- to call contract: [call](./console.html#call)
+- to switch group: [switch](./console.html#switch)
+
+### Console response
+
+When a console command is launched, the console will obtain the result of the command execution and displays the result at the terminal. The execution result is divided into two categories:
+- **true:** The command returns to the true execution result as a string or json.
+- **false:** The command returns to the false execution result as a string or json.
+  - When console command call the JSON-RPC interface, error code [reference here](../design/rpc.html#id6).
+  - When console command call the Precompiled Service interface, error code  [reference here](../sdk/sdk.html#precompiled-service-api).
+
+## Console configuration and operation 
 
 ```eval_rst
 .. important::
-    前置条件：搭建FISCO BCOS区块链请参考 `建链脚本 <./build_chain.html>`_ 或 `企业工具 <../enterprise_tools/index.html>`_。
+    precondition：to build FISCO BCOS blockchain, please refer to `Building Chain Script <./build_chain.html>`_ or `Enterprise Tools <../enterprise_tools/index.html>`_.
+ 
+
 ```
-### 获取控制台
+### Get console
 
 ```bash
 $ cd ~ && mkdir fisco && cd fisco
-# 获取控制台
+# get console
 $ bash <(curl -s https://raw.githubusercontent.com/FISCO-BCOS/console/master/tools/download_console.sh)
 ```
-目录结构如下：
+The directory structure is as follows:
 ```bash
-|-- apps # 控制台jar包目录
+|-- apps # console jar package directory
 |   -- console.jar 
-|-- lib # 相关依赖的jar包目录
+|-- lib # related dependent jar package directory
 |-- conf
-|   |-- applicationContext-sample.xml # 配置文件
-|   |-- log4j.properties  # 日志配置文件
-|   |-- privateKey.properties # 发送交易的私钥存储文件
-|-- solidity # 控制台命令部署和调用的合约所在目录
-|   -- contracts  # 部署和调用合约的solidity合约存储目录
-|       -- HelloWorld.sol # 普通合约：HelloWorld合约，可部署和调用
-|       -- TableTest.sol # 使用CRUD接口的合约：TableTest合约，可部署和调用
-|       -- Table.sol # CRUD需要引入的合约接口：Table合约接口
-|-- start.sh # 控制台启动脚本
-|-- replace_solc_jar.sh # 编译jar包替换脚本
-|-- tools # 控制台工具目录
-    |-- contracts # 用户编写的solidity合约存放目录
-    |   |-- Table.sol # 默认提供CRUD的合约接口Table.sol文件
-    |-- sol2java.sh # solidity合约文件编译为java合约文件的工具脚本
+|   |-- applicationContext-sample.xml # configuration file
+|   |-- log4j.properties  # log configuration file
+|   |-- privateKey.properties # transaction's private key storage file
+|-- solidity # console command deployment and calling contract directory
+|   -- contracts  # solidity's contract storage directory
+|       -- HelloWorld.sol # common contract: HelloWorld contract which can deploy and call
+|       -- TableTest.sol # contract using CRUD interface: TableTest contract which can deploy and call
+|       -- Table.sol # contract interface introduced by CRUD: Table contract interface
+|-- start.sh # console launches script
+|-- replace_solc_jar.sh # to compile jar package to replace script
+|-- tools # console tools directory
+    |-- contracts # user-written solidity contract storage directroy
+    |   |-- Table.sol # Table.sol file that provided CRUD contract interface by default.
+    |-- sol2java.sh # a tool script for compiling a solidity contract file into a java contract file
+
 ```
 
-#### 合约编译工具
+#### Contract compilation tool
 
 **控制台提供一个专门的编译合约工具，方便开发者将Solidity合约文件编译为Java合约文件。** 使用该工具，分为两步：
   - 将Solidity合约文件放在`tools/contracts`目录下。
