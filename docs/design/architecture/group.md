@@ -28,20 +28,20 @@ Then, data will be isolated with other groups. Every group runs consensus algori
 
 Core layer is responsible for inputing group data [block](../../tutorial/key_concepts.html#id3), block information, system table and execution result into data base.
 
-Storage is formed by two parts: State and AMDB. State contains MPTState and StorageState. It stores the status information of transations but not the history records of block and has higher performance than MPTState.   ，但不存储区块历史信息；AMDB则向外暴露简单的查询(select)、提交(commit)和更新(update)接口，负责操作合约表、系统表和用户表，具有可插拔特性，后端可支持多种数据库类型，目前仅支持[LevelDB数据库](https://github.com/google/leveldb)，后期会把基于mysql的[AMDB](../storage/storage.md)集成到系统中。
+Storage is formed by two parts: State and AMDB. State contains MPTState and StorageState who store the status information of transactions. StorageState has higher performance than MPTState, but it doesn't store history records of block. AMDB opens accesses of select, commit and update and operates contract table, system table, user table. It is pluggable and adatable to multiple kinds of database. Currently it adapts only to [LevelDB database](https://github.com/google/leveldb). In the future, mysql-based [AMDB](../storage/storage.md) will be integrated to the system. 
 
 ![](../../../images/architecture/storage.png)
 
 
 ## Access
 
-接口层包括交易池(TxPool)、区块链(BlockChain)和区块执行器(BlockVerifier)三个模块。
+Access layer includes three models: TxPool, BlockChain and BlockVerifier.
 
-- **交易池(TxPool)**: 与网络层以及调度层交互，负责缓存客户端或者其他节点广播的交易，调度层(主要是同步和共识模块)从交易池中取出交易进行广播或者区块打包；
+- **TxPool**: interact with networking and administration layers. 与网络层以及调度层交互，负责缓存客户端或者其他节点广播的交易，调度层(主要是同步和共识模块)从交易池中取出交易进行广播或者区块打包；
 
-- **区块链(BlockChain)**: 与核心层和调度层交互，是调度层访问底层存储的唯一入口，调度层(同步、共识模块)可通过区块链接口查询块高、获取指定区块、提交区块；
+- **BlockChain**: 与核心层和调度层交互，是调度层访问底层存储的唯一入口，调度层(同步、共识模块)可通过区块链接口查询块高、获取指定区块、提交区块；
 
-- **区块执行器(BlockVerifier)**: 与调度层交互，负责执行从调度层传入的区块，并将区块执行结果返回给调度层。
+- **BlockVerifier**: 与调度层交互，负责执行从调度层传入的区块，并将区块执行结果返回给调度层。
 
 
 ## Administration
