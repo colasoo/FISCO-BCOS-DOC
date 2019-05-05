@@ -67,60 +67,69 @@ The directory structure is as follows:
 
 #### Contract compilation tool
 
-**控制台提供一个专门的编译合约工具，方便开发者将Solidity合约文件编译为Java合约文件。** 使用该工具，分为两步：
-  - 将Solidity合约文件放在`tools/contracts`目录下。
-  - 通过运行`tools`目录下的`sol2java.sh`脚本(**需要指定一个Java的包名**)完成编译合约任务。例如，拷贝`HelloWorld.sol`合约到`tools/contracts`目录下，指定包名为`org.com.fisco`，命令如下：
+**The console provides a special compilation contract tool that allows developers to compile Solidity contract files into Java contract files.** Two steps for using the tool:
+
+  - To place the Solidity contract file in the `tools/contracts` directory.
+  - To compile the contract by running the `sol2java.sh` script in the `tools` directory (**requires specifying a Java package name**). For example, to copy the `HelloWorld.sol` contract to the `tools/contracts` directory, and to specify the package name as `org.com.fisco`. The command is as follows:
+
     ```bash
     $ cd ~/fisco/console
     $ cp solidity/contracts/HelloWorld.sol tools/contracts/
     $ cd tools
     $ ./sol2java.sh org.com.fisco
     ```
-    运行成功之后，将会在`console/tools`目录生成java、abi和bin目录，如下所示。
+    After running successfully, the directories of Java, ABI and bin will be generated in the `console/tools` directory as shown below.
+
     ```bash
-    |-- abi # 编译生成的abi目录，存放solidity合约编译的abi文件
+    |-- abi # to compile the generated abi directory and to store the abi file compiled by solidity contract
     |   |-- HelloWorld.abi
     |   |-- Table.abi
-    |-- bin # 编译生成的bin目录，存放solidity合约编译的bin文件
+    |-- bin # to compile the generated bin directory and to store the bin file compiled by solidity contract
     |   |-- HelloWorld.bin
     |   |-- Table.bin
-    |-- java  # 存放编译的包路径及Java合约文件
+    |-- java  # to store compiled package path and Java contract file
     |   |-- org
     |       |-- com
     |           |-- fisco
-    |               |-- HelloWorld.java # 编译成功的目标Java文件
-    |               |-- Table.java  # 编译成功的系统CRUD合约接口Java文件
+    |               |-- HelloWorld.java # the target Java file which is compiled successfully 
+    |               |-- Table.java  # the system CRUD contract interface Java file which is compiled successfully 
     ```
-    java目录下生成了`org/com/fisco/`包路径目录。包路径目录下将会生成Java合约文件`HelloWorld.java`和`Table.java`。其中`HelloWorld.java`是java应用所需要的java合约文件。
 
-**注：** 下载的控制台其`console/lib`目录下包含`solcJ-all-0.4.25.jar`，因此支持0.4版本的合约编译。如果使用0.5版本合约编译器或国密合约编译器，请下载相关合约编译器jar包，然后替换`console/lib`目录下的`solcJ-all-0.4.25.jar`。可以通过`./replace_solc_jar.sh`脚本进行替换，指定下载的编译器jar包路径，命令如下：
+In the java directory, `org/com/fisco/` package path directory is generated. In the package path directory, the java contract files `HelloWorld.java` and `Table.java` will be generated. `HelloWorld.java` is the java contract file required by the java application.
+
+
+**Note: ** The downloaded console contains `solcJ-all-0.4.25.jar` in the `console/lib` directory, so it supports the 0.4 version of the contract compilation. If you are using a 0.5 version contract compiler or a national contract compiler, please download the relevant contract compiler jar package, and replace `solcJ-all-0.4.25.jar` in the `console/lib` directory. It can be replaced by the `./replace_solc_jar.sh` script. To specify the jar package path, the command is as follows:
+
 ```bash
-# 下载solcJ-all-0.5.2.jar放在console目录下，示例用法如下
+# To download solcJ-all-0.5.2.jar and to place in console directory, the example usage is as follows
+
 $ ./replace_solc_jar.sh solcJ-all-0.5.2.jar
 ```
 
-#### 下载合约编译jar包
-0.4版本合约编译jar包
+#### Download contract compilation jar package
+0.4 version contract compilation jar package
 ```bash
 $ curl -LO https://github.com/FISCO-BCOS/LargeFiles/raw/master/tools/solcj/solcJ-all-0.4.25.jar
 ```
-0.5版本合约编译jar包
+0.5 version contract compilation jar package
 ```bash
 $ curl -LO https://github.com/FISCO-BCOS/LargeFiles/raw/master/tools/solcj/solcJ-all-0.5.2.jar
 ```
-国密0.4版本合约编译jar包
+state secret 0.4 version contract compilation jar package
 ```bash
 $ curl -LO https://github.com/FISCO-BCOS/LargeFiles/raw/master/tools/solcj/solcJ-all-0.4.25-gm.jar
 ```
-国密0.5版本合约编译jar包
+state secret 0.5 version contract compilation jar package
 ```bash
 $ curl -LO https://github.com/FISCO-BCOS/LargeFiles/raw/master/tools/solcj/solcJ-all-0.5.2-gm.jar
 ```
 
-### 配置控制台
-- 区块链节点和证书的配置：
-  - 将节点sdk目录下的`ca.crt`、`node.crt`和`node.key`文件拷贝到`conf`目录下。
-  - 将`conf`目录下的`applicationContext-sample.xml`文件重命名为`applicationContext.xml`文件。配置`applicationContext.xml`文件，其中添加注释的内容根据区块链节点配置做相应修改。
+### Configure console
+- Blockchain node and certificate configuration:
+   - To copy the `ca.crt`, `node.crt`, and `node.key` files in the sdk node directory to the `conf` directory.
+   - To rename the `applicationContext-sample.xml` file in the `conf` directory to the `applicationContext.xml` file. To configure the `applicationContext.xml` file, where the remark content is modified according to the blockchain node configuration.
+
+
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -143,9 +152,9 @@ $ curl -LO https://github.com/FISCO-BCOS/LargeFiles/raw/master/tools/solcj/solcJ
 
         <bean id="groupChannelConnectionsConfig" class="org.fisco.bcos.channel.handler.GroupChannelConnectionsConfig">
                 <property name="allChannelConnections">
-                        <list>  <!-- 每个群组需要配置一个bean -->
+                        <list>  <!-- each group need to configure a bean --> 
                                 <bean id="group1"  class="org.fisco.bcos.channel.handler.ChannelConnections">
-                                        <property name="groupId" value="1" /> <!-- 群组的groupID -->
+                                        <property name="groupId" value="1" /> <!-- groupID -->
                                         <property name="connectionsStr">
                                                 <list>
                                                         <value>127.0.0.1:20200</value>  <!-- IP:channel_port -->
@@ -157,7 +166,7 @@ $ curl -LO https://github.com/FISCO-BCOS/LargeFiles/raw/master/tools/solcj/solcJ
         </bean>
 
         <bean id="channelService" class="org.fisco.bcos.channel.client.Service" depends-on="groupChannelConnectionsConfig">
-                <property name="groupId" value="1" /> <!-- 连接ID为1的群组 -->
+                <property name="groupId" value="1" /> <!-- to connect to the group with ID 1 --> 
                 <property name="orgID" value="fisco" />
                 <property name="allChannelConnections" ref="groupChannelConnectionsConfig"></property>
         </bean>
