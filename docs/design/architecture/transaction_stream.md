@@ -1,33 +1,33 @@
-# 交易流
+# Transaction flow
 
-## 1 总体方案
+## 1 Solution
 
-用户通过SDK或curl命令向节点发起RPC请求以发起交易，节点收到交易后将交易附加到交易池中，打包器不断从交易池中取出交易并通过一定条件触发将取出交易打包为区块。生成区块后，由共识引擎进行验证及共识，验证区块无误且节点间达成共识后，将区块上链。当节点通过同步模块从其他节点处下载缺失的区块时，会同样对区块进行执行及验证。
+User sends RPC request to node through SDK or curl command to start transaction. Node adds transaction to TxPool after receiving it. Sealer will constantly take out transactions from TxPool and pack them into block through certain conditions. After the blocks are generated, they will be verified as consensus by concensus engine. If there are no mistakes and consensus is made among nodes, the blocks will be taken on chain. When node using sync model to download missing blocks from other nodes, the execution and verification on blocks will be conducted also. 
 
-## 2 整体架构
-整体架构如下图所示：
+## 2 Structure
+The overall structure is as below:
 
 ![](../../../images/architecture/transaction_stream.png)
 
-**Node**：区块节点
+**Node**: Node of block
 
-**TxPool**：交易池，节点自身维护的、用于暂存收到的交易的内存区域
+**TxPool**: transaction pool, the memory area maintained by node itself for temporarily saving recerived transactions
 
-**Sealer**：打包器
+**Sealer**: block packager 
 
-**Consensus Engine**：共识引擎
+**Consensus Engine**: consensus engine
 
-**BlockVerifier**：区块验证器，用于验证一个区块的正确性
+**BlockVerifier**: block verifier, to verify the correctness of a block
 
-**Executor**：执行引擎，执行单个交易
+**Executor**: execution engine, to execute single transaction
 
-**BlockChain**：区块链管理模块，是唯一有写权限的模块，提交区块接口需要同时传入区块数据和执行上下文数据，区块链管理将两种数据整合成一个事务提交到底层存储
+**BlockChain**: administration model of blockchain, the only authorized model. User should input block data as well as execute contextual data before submiting block interface. This administration model will combine the two types of data into one and send to the bottom storage
 
-**Storage**：底层存储
+**Storage**: the bottom storage
 
-主要关系如下：
+main relations are as followed:
 
- 1. 用户通过操作SDK或直接编写curl命令向所连接的节点发起交易。
+ 1. User starts transaction through SDK or curl command to the connected node.
  2. 节点收到交易后，若当前交易池未满则将交易附加至TxPool中并向自己所连的节点广播该交易；否则丢弃交易并输出告警。
  3. Sealer会不断从交易池中取出交易，并立即将收集到的交易打包为区块并发送至共识引擎。
  4. 共识引擎调用BlockVerifier对区块进行验证并在网络中进行共识，BlockVerifier调用Executor执行区块中的每笔交易。当区块验证无误且网络中节点达成一致后，共识引擎将区块发送至BlockChain。
