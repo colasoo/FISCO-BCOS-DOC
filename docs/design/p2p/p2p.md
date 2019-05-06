@@ -1,12 +1,12 @@
-# P2P网络
+# P2P network
 
-## 设计目标
+## Design objective
 
-FISCO BCOS P2P模块提供高效、通用和安全的网络通信基础功能，支持区块链消息的单播、组播和广播，支持区块链节点状态同步，支持多种协议。
+FISCO BCOS P2P model, with basic functions for efficient, commonly-used and safe internet communication, supports unicast, multicast and broadcast of blockchain messages, sychronizes nodes status and adapts multiple protocols.
 
-## P2P主要功能
+## P2P main functions
 
-- 区块链节点标识
+- Blockchain node ID
 
 通过区块链节点标识唯一标识一个区块链节点，在区块链网络上通过区块链节点标识对区块链节点进行寻址
 
