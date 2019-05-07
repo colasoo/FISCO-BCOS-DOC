@@ -1,14 +1,14 @@
-# 同步
+# Syncing
 
-同步，是区块链节点非常重要的功能。它是[共识](../consensus/)的辅助，给共识提供必需的运行条件。同步分为交易的同步和状态的同步。交易的同步，确保了每笔交易能正确的到达每个节点上。状态的同步，能确保区块落后的节点能正确的回到最新的状态。只有持有最新区块状态的节点，才能参与到共识中去。
+Syncing is a fundamental funtion of blockchain nodes. It helps [consensus](../consensus/) by providing necessary conditions. Syncing can be devided into transaction syncing and status syncing. Transaction syncing ensures each transaction reaches nodes correctly. Status syncing ensures that nodes with lagging blocks can catch up with the newest status. Only nodes with the newest staus can join in the consensus mechanism. 
 
-## 交易同步
+## Transaction syncing
 
-交易同步，是让区块链的上的交易尽可能的到达所有的节点。为共识中将交易打包成区块提供基础。
+Transaction syncing makes is possible for transactions to reach every node, laying the foundation for sealing transaction into blocks during consensus process.
 
 ![](../../../images/sync/tx.png)
 
-一笔交易（tx1），从客户端上发往某个节点，节点在接收到交易后，会将交易放入自身的交易池（Tx Pool）中供共识去打包。与此同时，节点会将交易广播给其它的节点，其它节点收到交易后，也会将交易放到自身的交易池中。交易在发送的过程中，会有丢失的情况，为了能让交易尽可能的到达所有的节点，收到广播过来交易的节点，会根据一定的策略，选择其它的节点，再进行一次广播。
+Transaction 1 (tx1)，从客户端上发往某个节点，节点在接收到交易后，会将交易放入自身的交易池（Tx Pool）中供共识去打包。与此同时，节点会将交易广播给其它的节点，其它节点收到交易后，也会将交易放到自身的交易池中。交易在发送的过程中，会有丢失的情况，为了能让交易尽可能的到达所有的节点，收到广播过来交易的节点，会根据一定的策略，选择其它的节点，再进行一次广播。
 
 **交易广播策略**
 
