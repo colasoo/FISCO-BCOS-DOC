@@ -193,7 +193,7 @@ $ curl -LO https://github.com/FISCO-BCOS/LargeFiles/raw/master/tools/solcj/solcJ
 ### Launch console
 ```text
 $ ./start.sh
-# 输出下述信息表明启动成功
+# To output the following information to indicate successful launch
 =====================================================================================
 Welcome to FISCO BCOS console(1.0.2)!
 Type 'help' or 'h' for help. Type 'quit' or 'q' to quit console.
@@ -210,20 +210,20 @@ Type 'help' or 'h' for help. Type 'quit' or 'q' to quit console.
 =====================================================================================
 ```
 
-### 启动脚本说明
-#### 查看启动脚本帮助说明：
+### Launch script description
+#### To view the help instruction of script launching
 ```bash
 $ ./start.sh --help
 Usage
 start console: 	./start.sh [groupID] [privateKey]
 print console version: 	./start.sh --version
 ```
-#### 查看当前控制台版本：
+#### To view the current console version:
 ```bash
 ./start.sh --version
 console version: 1.0.2
 ```
-#### 启动控制台：
+#### To launch console:
 ```bash
 $ ./start.sh [groupID] [privateKey]   
 ```
@@ -231,11 +231,16 @@ $ ./start.sh [groupID] [privateKey]
 - `groupId`: 群组ID, 不指定则默认为群组1。           
 - `privateKey`: 交易发送者外部账号的私钥，不指定则默认从`conf`目录下的privateKey.properties中读取私钥，如果该文件内容被清空，则随机生成外部账号私钥并将生产的私钥保持在该私钥配置文件中。 
 
-示例
+The launching command can specify two optional parameters:
+- `groupId`: Group ID, if it is not specified, the default is group 1.
+- `privateKey`: The private key of the transaction sender's external account. If it is not specified, the private key is read from the privateKey.properties in the `conf` directory. If the file is emptied, the external account private key is randomly generated, and the generated private key is kept in the private key configuration file.
+
+Example
 ```bash
 # 以群组2，私钥账号地址为3bed914595c159cbce70ec5fb6aff3d6797e0c5ee5a7a9224a21cae8932d84a4登录控制台
 $ ./start.sh 2 3bed914595c159cbce70ec5fb6aff3d6797e0c5ee5a7a9224a21cae8932d84a4  
 ```
+Log in to the console as group 2 and private key account address is 3bed914595c159cbce70ec5fb6aff3d6797e0c5ee5a7a9224a21cae8932d84a4
 
 ## 控制台命令
 ### **help**
