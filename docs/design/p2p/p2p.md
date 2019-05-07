@@ -104,55 +104,55 @@ Messaging among nodes supports unicast, multicast and broadcast.
         participant Node C
         participant Node D
 
-        Node A->>Node A: 根据Topic 1，选择节点B、C
-        Node A->>Node B: 发送消息
-        Node A->>Node C: 发送消息
-        Node B->>Node B: 根据Topic 2，选择节点C、D
-        Node B->>Node C: 发送消息
-        Node B->>Node D: 发送消息
-        Node C->>Node C: 根据Topic 3，选择节点D
-        Node C->>Node D: 发送消息
+        Node A->>Node A: select Node B and C from Topic 1
+        Node A->>Node B: send message
+        Node A->>Node C: send message
+        Node B->>Node B: select Node C and D from Topic 2
+        Node B->>Node C: send message
+        Node B->>Node D: send message
+        Node C->>Node C: select Node D from Topic 3
+        Node C->>Node D: send message
 
 ```
 
-### 广播流程
+### Broadcast process
 
 ```eval_rst
 .. mermaid::
 
     sequenceDiagram
-        participant 区块链节点A
-        participant 区块链节点B
-        participant 区块链节点C
-        participant 区块链节点D
+        participant Node A
+        participant Node B
+        participant Node C
+        participant Node D
 
-        区块链节点A->>区块链节点A: 遍历所有节点ID
-        区块链节点A->>区块链节点B: 发送消息
-        区块链节点A->>区块链节点C: 发送消息
-        区块链节点A->>区块链节点D: 发送消息
-        区块链节点B->>区块链节点B: 遍历所有节点ID
-        区块链节点B->>区块链节点C: 发送消息
-        区块链节点B->>区块链节点D: 发送消息
-        区块链节点C->>区块链节点C: 遍历所有节点ID
-        区块链节点C->>区块链节点D: 发送消息
+        Node A->>Node A: traverse every node ID
+        Node A->>Node B: send message
+        Node A->>Node C: send message
+        Node A->>Node D: send message
+        Node B->>Node B: traverse every node ID
+        Node B->>Node C: send message
+        Node B->>Node D: send message
+        Node C->>Node C: traverse every node ID
+        Node C->>Node D: send message
 
 ```
 
-## 状态同步
+## Status syncing
 
-每个节点会维护自身的状态，并将状态的Seq在全网定时广播，与其它节点同步
+Every node maintains its own status and broadcasts the Seq regularly to sychronize all nodes.
 
 ```eval_rst
 .. mermaid::
 
     sequenceDiagram
-        participant 区块链节点A
-        participant 区块链节点B
+        participant Node A
+        participant Node B
 
-        区块链节点A->区块链节点B: 广播seq
-        区块链节点A->>区块链节点A: 判断节点B的seq是否变化
-        区块链节点A->>区块链节点B: seq变化，发起状态查询请求
-        区块链节点B->>区块链节点A: 返回节点状态
-        区块链节点A->>区块链节点A: 更新节点B的状态和seq
+        Node A->Node B: broadcast seq
+        Node A->>Node A: tell whether the seq of Node B has changed
+        Node A->>Node B: seq changed, request status checking
+        Node B->>Node A: return node status
+        Node A->>Node A: update status and seq of Node B
 
 ```
