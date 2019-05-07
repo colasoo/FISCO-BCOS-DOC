@@ -67,7 +67,7 @@ The directory structure is as follows:
 
 #### Contract compilation tool
 
-**The console provides a special compilation contract tool that allows developers to compile Solidity contract files into Java contract files.** Two steps for using the tool:
+**Console provides a special compilation contract tool that allows developers to compile Solidity contract files into Java contract files.** Two steps for using the tool:
 
   - To place the Solidity contract file in the `tools/contracts` directory.
   - To compile the contract by running the `sol2java.sh` script in the `tools` directory (**requires specifying a Java package name**). For example, to copy the `HelloWorld.sol` contract to the `tools/contracts` directory, and to specify the package name as `org.com.fisco`. The command is as follows:
@@ -173,23 +173,24 @@ $ curl -LO https://github.com/FISCO-BCOS/LargeFiles/raw/master/tools/solcj/solcJ
 
 </beans>
 ```
-  配置项详细说明[参考这里](../sdk/sdk.html#spring)。
+  Configuration detail [reference here](../sdk/sdk.html#spring)。
+
 
 ```eval_rst
 .. important::
 
-    控制台配置说明
+    Console configuration instructions
 
-    - 如果控制台配置正确，但是在CentOS系统上启动控制台出现如下错误：
-    
+    - If the console is configured correctly, but when it is launched on Cent0S system, the following error occurs:
+
       Failed to connect to the node. Please check the node status and the console configruation.
 
-     则是因为使用了CentOS系统自带的JDK版本(会导致控制台与区块链节点认证失败)，请从 `OpenJDK官网 <https://jdk.java.net/java-se-ri/8>`_ 或 `Oracle官网 <https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html>`_ 下载并安装Java 8或以上版本(具体安装步骤 `参考附录 <./console.html#java>`_ )，安装完毕后再启动控制台。
+      It is because the JDK version that comes with the CentOS system is used (it will cause the console and blockchain node's authentication to fail). Please download Java 8 version or above from `OpenJDK official website <https://jdk.java.net/java-se-ri/8>`_ or `Oracle official website <https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html>`_ and install (specific installation steps `refer to Appendix <./console.html#java>`_). To launch the console after installation.
 
-    - 当控制台配置文件在一个群组内配置多个节点连接时，由于群组内的某些节点在操作过程中可能退出群组，因此控制台轮询节点查询时，其返回信息可能不一致，属于正常现象。建议使用控制台时，配置一个节点或者保证配置的节点始终在群组中，这样在同步时间内查询的群组内信息保持一致。
+    - When the console configuration file configures multiple node connections in a group, some nodes in the group may leave the group during operation. Therefore, it shows a norm which is when the console is polling, the return information may be inconsistent. It is recommended to configure a node or ensure that the configured nodes are always in the group when using the console, so that the inquired information in the group will keep consistent during the synchronization time.
 
 ``` 
-### 启动控制台
+### Launch console
 ```text
 $ ./start.sh
 # 输出下述信息表明启动成功
