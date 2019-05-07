@@ -6,24 +6,24 @@
 ### Console command
 
 Console command consists of two parts, the instructions and the parameters related to the instruction:
-- **instruction**: instruction is an executed operation command, including blockchain status inquiry and contracts deployment and calling. And some of the instructions call the JSON-RPC interface, so they have same name as the JSON-RPC interface.
+- **Instruction**: instruction is an executed operation command, including blockchain status inquiry and contracts deployment and calling. And some of the instructions call the JSON-RPC interface, so they have same name as the JSON-RPC interface.
 **Use suggestions: instructions can be completed using the tab key, and support for displaying historical input commands by pressing the up and down keys.**
 
-- **parameters related to the instruction**: parameters required by instruction call interface. Instructions to parameters and parameters to parameters are separated by spaces. The paramenters name same as JSON-RPC interface and the explanation of getting information field can be refered to [JSON-RPC API](../api.md).
+- **Parameters related to the instruction**: parameters required by instruction call interface. Instructions to parameters and parameters to parameters are separated by spaces. The paramenters name same as JSON-RPC interface and the explanation of getting information field can be refered to [JSON-RPC API](../api.md).
 
 
 Common command link:
-- to view block height: [getBlockNumber](./console.html#getblocknumber)
-- to view consensus node list: [getSealerList](./console.html#getsealerlist)
-- to deploy contract: [deploy](./console.html#deploy)
-- to call contract: [call](./console.html#call)
-- to switch group: [switch](./console.html#switch)
+- To view block height: [getBlockNumber](./console.html#getblocknumber)
+- To view consensus node list: [getSealerList](./console.html#getsealerlist)
+- To deploy contract: [deploy](./console.html#deploy)
+- To call contract: [call](./console.html#call)
+- To switch group: [switch](./console.html#switch)
 
 ### Console response
 
 When a console command is launched, the console will obtain the result of the command execution and displays the result at the terminal. The execution result is divided into two categories:
-- **true:** The command returns to the true execution result as a string or json.
-- **false:** The command returns to the false execution result as a string or json.
+- **True:** The command returns to the true execution result as a string or json.
+- **False:** The command returns to the false execution result as a string or json.
   - When console command call the JSON-RPC interface, error code [reference here](../design/rpc.html#id6).
   - When console command call the Precompiled Service interface, error code  [reference here](../sdk/sdk.html#precompiled-service-api).
 
@@ -115,11 +115,11 @@ $ curl -LO https://github.com/FISCO-BCOS/LargeFiles/raw/master/tools/solcj/solcJ
 ```bash
 $ curl -LO https://github.com/FISCO-BCOS/LargeFiles/raw/master/tools/solcj/solcJ-all-0.5.2.jar
 ```
-state secret 0.4 version contract compilation jar package
+State secret 0.4 version contract compilation jar package
 ```bash
 $ curl -LO https://github.com/FISCO-BCOS/LargeFiles/raw/master/tools/solcj/solcJ-all-0.4.25-gm.jar
 ```
-state secret 0.5 version contract compilation jar package
+State secret 0.5 version contract compilation jar package
 ```bash
 $ curl -LO https://github.com/FISCO-BCOS/LargeFiles/raw/master/tools/solcj/solcJ-all-0.5.2-gm.jar
 ```
