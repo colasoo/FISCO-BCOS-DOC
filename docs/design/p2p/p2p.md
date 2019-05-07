@@ -126,14 +126,14 @@ Messaging among nodes supports unicast, multicast and broadcast.
         participant Node C
         participant Node D
 
-        Node A->>Node A: traverse every node ID
+        Node A->>Node A: iterate over each node ID
         Node A->>Node B: send message
         Node A->>Node C: send message
         Node A->>Node D: send message
-        Node B->>Node B: traverse every node ID
+        Node B->>Node B: iterate over each node ID
         Node B->>Node C: send message
         Node B->>Node D: send message
-        Node C->>Node C: traverse every node ID
+        Node C->>Node C: iterate over each node ID
         Node C->>Node D: send message
 
 ```
