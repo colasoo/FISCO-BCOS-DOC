@@ -1189,4 +1189,3 @@ $ source /etc/profile
 # 查询Java版本，出现的版本是自己下载的版本，则安装成功。
 java -version 
 ```
-
